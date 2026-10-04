@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhập Hệ Thống</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --light-bg: #f8f9fa;
+            --card-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 20px 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .login-container {
+            max-width: 450px;
+            margin: 0 auto;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(50, 50, 93, 0.15), 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 35px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            transform: skewY(-5deg) translateY(-50%);
+        }
+
+        .card-header h3 {
+            position: relative;
+            z-index: 1;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .card-body {
+            padding: 40px 35px;
+            background-color: white;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            color: white;
+            font-size: 36px;
+            margin-bottom: 15px;
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #495057;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-label i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+            color: #667eea;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 12px;
+            padding: 14px 18px;
+            border: 2px solid #e8e8e8;
+            font-size: 16px;
+            transition: var(--transition);
+            background-color: #fdfdfd;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.2);
+            background-color: white;
+        }
+
+        .input-group-text {
+            background-color: transparent;
+            border: 2px solid #e8e8e8;
+            border-right: none;
+            border-radius: 12px 0 0 12px;
+        }
+
+        .btn-login {
+            background: var(--primary-gradient);
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 0.5px;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4196 100%);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 30px 0;
+            color: #adb5bd;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e9ecef;
+        }
+
+        .divider span {
+            padding: 0 15px;
+            font-size: 14px;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 25px;
+            color: #6c757d;
+        }
+
+        .register-link a {
+            color: #667eea;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .register-link a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .register-link i {
+            margin-right: 8px;
+        }
+
+        .alert {
+            border-radius: 12px;
+            border: none;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .alert-danger {
+            background-color: #ffeaea;
+            color: #d9534f;
+            border-left: 4px solid #d9534f;
+        }
+
+        .alert-success {
+            background-color: #eaffea;
+            color: #5cb85c;
+            border-left: 4px solid #5cb85c;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: 10px;
+        }
+
+        .forgot-password a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .forgot-password a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 576px) {
+            .card-body {
+                padding: 30px 25px;
+            }
+
+            .card-header {
+                padding: 25px 20px;
+            }
+
+            .login-container {
+                padding: 0 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="login-container">
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-sign-in-alt me-2"></i>ĐĂNG NHẬP HỆ THỐNG</h3>
+                </div>
+
+                <div class="card-body">
+                    <div class="logo-container">
+                        <div class="logo">
+                            <i class="fas fa-user-lock"></i>
+                        </div>
+                        <h4 class="text-muted">Chào mừng trở lại</h4>
+                        <p class="text-muted small">Vui lòng đăng nhập để tiếp tục</p>
+                    </div>
+
+                    <!-- Flash message -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% for category, message in messages %}
+                    <div
+                        class="alert alert-{{ 'danger' if category=='error' else 'success' }} d-flex align-items-center">
+                        <i
+                            class="fas fa-{{ 'exclamation-triangle' if category=='error' else 'check-circle' }} me-3"></i>
+                        <div>{{ message }}</div>
+                    </div>
+                    {% endfor %}
+                    {% endwith %}
+
+                    <form method="POST" action="{{ url_for('login') }}" id="loginForm">
+                        <!-- USERNAME -->
+                        <div class="mb-4">
+                            <label class="form-label">
+                                <i class="fas fa-user"></i>Tên đăng nhập hoặc Email
+                            </label>
+
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-at"></i></span>
+                                <input type="text" class="form-control" name="username"
+                                    placeholder="Nhập tên đăng nhập của bạn" required>
+                            </div>
+                        </div>
+
+                        <!-- PASSWORD -->
+                        <div class="mb-4">
+                            <label class="form-label">
+                                <i class="fas fa-lock"></i>Mật khẩu
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                <input type="password" class="form-control" name="password"
+                                    placeholder="Nhập mật khẩu của bạn" required id="password">
+                                <span class="input-group-text toggle-password" style="cursor: pointer;">
+                                    <i class="fas fa-eye" id="togglePassword"></i>
+                                </span>
+                            </div>
+                            <div class="forgot-password">
+                                <a href="#"><i class="fas fa-question-circle me-1"></i>Quên mật khẩu?</a>
+                            </div>
+                        </div>
+
+                        <!-- BUTTON -->
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-login">
+                                <i class="fas fa-sign-in-alt me-2"></i>ĐĂNG NHẬP
+                            </button>
+                        </div>
+
+                        <div class="divider">
+                            <span>HOẶC</span>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <p class="register-link">
+                                Chưa có tài khoản?
+                                <a href="{{ url_for('register') }}">
+                                    <i class="fas fa-user-plus me-1"></i>Đăng ký ngay
+                                </a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <p class="text-white small">
+                    &copy; Hà Nội 2026 Hệ thống Quản lý. Bảo lưu mọi quyền.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Hiển thị/ẩn mật khẩu
+        document.getElementById('togglePassword').addEventListener('click', function () {
+            const passwordInput = document.getElementById('password');
+            const icon = this;
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        // Hiệu ứng khi submit form
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> ĐANG XỬ LÝ...';
+            submitBtn.disabled = true;
+        });
+    </script>
+</body>
+
+</html>

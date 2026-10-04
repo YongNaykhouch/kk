@@ -1,0 +1,85 @@
+{% extends "Admin.html" %}
+
+{% block title %}Thêm {{ category_name }} Mới{% endblock %}
+
+{% block page_title %}Thêm {{ category_name }}{% endblock %}
+{% block page_subtitle %}Nhập đầy đủ thông tin sản phẩm{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="fas {{ icon }}"></i> Thêm {{ category_name }}</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="category" value="{{ category }}">
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-8">
+                                <label class="form-label fw-bold">Tên sản phẩm <span class="text-danger">*</span></label>
+                                <input type="text" name="name" class="form-control form-control-lg" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold">Thương hiệu</label>
+                                <input type="text" name="brand" class="form-control" placeholder="Apple, Samsung...">
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Giá bán (₫) <span class="text-danger">*</span></label>
+                                <input type="number" name="price" class="form-control form-control-lg" min="0" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Hình ảnh <span class="text-danger">*</span></label>
+                                <input type="file" name="image" class="form-control" accept="image/*" required>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Dynamic Fields Based on Category -->
+                        {% if category == 'dienthoai' %}
+                            {% include 'specs/dienthoai.html' %}
+
+                        {% elif category == 'laptop' %}
+                            {% include 'specs/laptop.html' %}
+
+                        {% elif category == 'tulanh' %}
+                            {% include 'specs/tulanh.html' %}
+
+                        {% elif category == 'dongho' %}
+                            {% include 'specs/dongho.html' %}
+
+                        {% elif category == 'maytinhbanpc' %}
+                            {% include 'specs/maytinhbanpc.html' %}
+
+                        {% elif category == 'quat' %}
+                            {% include 'specs/quat.html' %}
+
+                        {% elif category == 'maygiatsay' %}
+                            {% include 'specs/maygiatsay.html' %}
+
+                        {% elif category == 'beptu' %}
+                            {% include 'specs/beptu.html' %}
+
+                        {% endif %}
+
+                        <div class="mt-4 d-flex gap-3">
+                            <button type="submit" class="btn btn-success btn-lg px-5">
+                                <i class="fas fa-save me-2"></i>Thêm Sản Phẩm
+                            </button>
+                            <a href="{{ url_for('admin_add_product') }}" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-arrow-left me-2"></i>Quay Lại
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

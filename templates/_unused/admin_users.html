@@ -1,0 +1,268 @@
+{% extends "Admin.html" %}
+
+{% block title %}Quản Lý Người Dùng{% endblock %}
+{% block page_title %}Quản Lý Người Dùng{% endblock %}
+{% block page_subtitle %}Quản lý tất cả người dùng trong hệ thống{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                    <i class="fas fa-user-plus me-2"></i> Thêm Người Dùng
+                </button>
+            </div>
+            <div class="d-flex gap-2">
+                <input type="text" class="form-control" placeholder="Tìm kiếm người dùng..." id="searchInput">
+                <button class="btn btn-outline-secondary" onclick="exportToExcel()">
+                    <i class="fas fa-download me-2"></i> Xuất Excel
+                </button>
+            </div>
+        </div>
+        
+        <div class="data-table fade-in">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th width="5%">ID</th>
+                        <th width="25%">Thông Tin</th>
+                        <th width="15%">Tên Đăng Nhập</th>
+                        <th width="15%">Vai Trò</th>
+                        <th width="20%">Thông Tin Liên Hệ</th>
+                        <th width="20%">Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTable">
+                    {% for user in users %}
+                    <tr data-user-id="{{ user.id }}">
+                        <td class="fw-bold">{{ user.id }}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="https://ui-avatars.com/api/?name={{ user.username }}&background=random&color=fff" 
+                                     class="rounded-circle me-3" width="45" height="45" alt="Avatar">
+                                <div>
+                                    <div class="fw-semibold">{{ user.username }}</div>
+                                    <small class="text-muted">ID: {{ user.id }}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ user.username }}</td>
+                        <td>
+                            {% if user.role == 'admin' %}
+                                <span class="badge bg-danger">Quản Trị Viên</span>
+                            {% elif user.role == 'employee' %}
+                                <span class="badge bg-warning">Nhân Viên</span>
+                            {% else %}
+                                <span class="badge bg-success">Người Dùng</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <small>
+                                {% if user.email %}
+                                    <div><i class="fas fa-envelope me-1"></i> {{ user.email }}</div>
+                                {% endif %}
+                                {% if user.phone %}
+                                    <div><i class="fas fa-phone me-1"></i> {{ user.phone }}</div>
+                                {% endif %}
+                            </small>
+                        </td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-warning btn-sm" onclick="editUser('{{ user.id }}')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteUser('{{ user.id }}', '{{ user.username }}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-muted">
+                            <i class="fas fa-users fa-2x mb-2"></i>
+                            <p>Không có người dùng nào</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Add User Modal -->
+<div class="modal fade" id="addUserModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title"><i class="fas fa-user-plus me-2"></i> Thêm Người Dùng Mới</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="addUserForm">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="username" class="form-label required">Tên Đăng Nhập</label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label required">Mật Khẩu</label>
+                                <input type="password" class="form-control" id="password" name="password" required minlength="6">
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirm_password" class="form-label required">Xác Nhận Mật Khẩu</label>
+                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                                <div class="invalid-feedback">Mật khẩu không khớp</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="role" class="form-label required">Vai Trò</label>
+                                <select class="form-select" id="role" name="role" required>
+                                    <option value="" disabled selected>Chọn vai trò</option>
+                                    <option value="admin">Quản Trị Viên</option>
+                                    <option value="employee">Nhân Viên</option>
+                                    <option value="user">Người Dùng</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email">
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Số Điện Thoại</label>
+                                <input type="tel" class="form-control" id="phone" name="phone">
+                            </div>
+                            <div class="mb-3">
+                                <label for="full_name" class="form-label">Họ và Tên</label>
+                                <input type="text" class="form-control" id="full_name" name="full_name">
+                            </div>
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Địa Chỉ</label>
+                                <textarea class="form-control" id="address" name="address" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Thêm Người Dùng</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const password = document.getElementById('password');
+const confirmPassword = document.getElementById('confirm_password');
+
+function validatePasswords() {
+    if(password.value !== confirmPassword.value) {
+        confirmPassword.classList.add('is-invalid');
+        return false;
+    } else {
+        confirmPassword.classList.remove('is-invalid');
+        return true;
+    }
+}
+
+confirmPassword.addEventListener('input', validatePasswords);
+password.addEventListener('input', validatePasswords);
+
+document.getElementById('addUserForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    if(!validatePasswords()) return;
+
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData.entries());
+
+    fetch('{{ url_for("admin_users") }}', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(res => {
+        if(res.success){
+            Swal.fire('Thành công','Đã thêm người dùng','success').then(()=> location.reload());
+        } else {
+            Swal.fire('Lỗi', res.error || 'Có lỗi xảy ra','error');
+        }
+    })
+    .catch(err => Swal.fire('Lỗi', err,'error'));
+});
+
+function editUser(userId){
+    const row = document.querySelector(`tr[data-user-id="${userId}"]`);
+    const username = row.cells[2].textContent;
+    const roleText = row.cells[3].querySelector('.badge').textContent;
+    let role = 'user';
+    if(roleText.includes('Quản Trị')) role = 'admin';
+    else if(roleText.includes('Nhân Viên')) role = 'employee';
+
+    const newUsername = prompt('Chỉnh sửa tên đăng nhập:', username);
+    if(!newUsername) return;
+    const newRole = prompt('Chỉnh sửa vai trò (admin/employee/user):', role);
+
+    fetch('{{ url_for("admin_users") }}', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userId, username: newUsername, role: newRole })
+    })
+    .then(res => res.json())
+    .then(res => {
+        if(res.success){
+            Swal.fire('Thành công','Đã cập nhật người dùng','success').then(()=> location.reload());
+        } else {
+            Swal.fire('Lỗi', res.error || 'Có lỗi xảy ra','error');
+        }
+    });
+}
+
+function deleteUser(userId, username){
+    Swal.fire({
+        title: `Xóa người dùng ${username}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Xóa',
+        cancelButtonText: 'Hủy'
+    }).then((result)=>{
+        if(result.isConfirmed){
+            fetch('/admin/delete_user', {
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body: JSON.stringify({user_id:userId})
+            })
+            .then(res=>res.json())
+            .then(res=>{
+                if(res.success){
+                    Swal.fire('Thành công','Đã xóa người dùng','success').then(()=> location.reload());
+                } else {
+                    Swal.fire('Lỗi', res.error || 'Không thể xóa','error');
+                }
+            });
+        }
+    });
+}
+
+// Search filter
+document.getElementById('searchInput').addEventListener('input', function(){
+    const term = this.value.toLowerCase();
+    document.querySelectorAll('#usersTable tr').forEach(tr=>{
+        tr.style.display = tr.textContent.toLowerCase().includes(term) ? '' : 'none';
+    });
+});
+
+// Export Excel (demo)
+function exportToExcel(){
+    Swal.fire('Xuất dữ liệu','Danh sách người dùng đã được xuất','success');
+}
+</script>
+{% endblock %}

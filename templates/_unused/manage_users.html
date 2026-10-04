@@ -1,0 +1,373 @@
+{% extends "Admin.html" %}
+{% block users %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Quản Trị Viên - Cửa Hàng Điện Tử</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Merriweather', serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .role {
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .role-admin {
+            background-color: #007bff;
+        }
+
+        .role-employee {
+            background-color: #28a745;
+        }
+
+        .role-user {
+            background-color:rgb(12, 6, 205);
+            color: #333;
+        }
+
+        .action-btn {
+            padding: 8px 12px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .add-btn {
+            background-color: #28a745;
+        }
+
+        .edit-btn {
+            background-color: rgb(12, 6, 205);
+            color: #333;
+        }
+
+        .delete-btn {
+            background-color: #3a8f77;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 5px;
+            width: 400px;
+        }
+
+        .modal-content input,
+        .modal-content select {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+
+        .modal-content button {
+            padding: 10px 20px;
+            margin: 10px 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .save-btn {
+            background-color: #28a745;
+        }
+
+        .cancel-modal-btn {
+            background-color: #dc3545;
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+            max-width: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    
+    
+
+
+    <!-- Add User Modal -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <h2>Thêm Quản Trị Viên</h2>
+            <form id="addUserForm">
+                <input type="text" name="username" placeholder="Tên Đăng Nhập" required>
+                <input type="password" name="password" placeholder="Mật Khẩu" required>
+                <select name="role" required>
+                    <option value="admin">Admin</option>
+                    <option value="employee">Employee</option>
+                    <option value="user">User</option>
+                </select>
+                <button type="submit" class="save-btn">Lưu</button>
+                <button type="button" class="cancel-modal-btn" onclick="closeAddModal()">Hủy</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div id="editUserModal" class="modal">
+        <div class="modal-content">
+            <h2>Chỉnh Sửa Quản Trị Viên</h2>
+            <form id="editUserForm">
+                <input type="hidden" id="editUserId" name="user_id">
+                <input type="text" id="editUserName" name="username" placeholder="Tên Đăng Nhập" required>
+                <input type="password" id="editUserPassword" name="password"
+                    placeholder="Mật Khẩu (Để trống nếu không đổi)">
+                <select id="editUserRole" name="role" required>
+                    <option value="admin">Admin</option>
+                    <option value="employee">Employee</option>
+                    <option value="user">User</option>
+                </select>
+                <button type="submit" class="save-btn">Lưu</button>
+                <button type="button" class="cancel-modal-btn" onclick="closeEditModal()">Hủy</button>
+            </form>
+        </div>
+    </div>
+    <div class="content-wrapper">
+        <div class="page-heading">
+            <h1><i class="fas fa-user-shield me-2"></i> Quản Lý Quản Trị Viên</h1>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                <i class="fas fa-plus me-2"></i> Thêm Quản Trị Viên
+            </button>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h6><i class="fas fa-list me-2"></i> Danh Sách Quản Trị Viên</h6>
+            </div>
+            <div class="card-body">
+                
+                <div class="mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="searchInput"
+                            placeholder="Tìm kiếm quản trị viên...">
+                        <button class="btn btn-primary" id="searchButton">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên Đăng Nhập</th>
+                                <th>Vai Trò</th>
+                                <th>Khách Hàng ID</th>
+                                <th>Hành Động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            {% for user in users %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.username }}</td>
+                                <td><span class="badge-role">{{ user.role }}</span></td>
+                                <td>{{ user.customer_id }}</td>
+                                <td>
+                                    <button class="btn btn-outline-warning btn-sm edit-btn" data-id="{{ user.id }}"
+                                        data-username="{{ user.username }}" data-role="{{ user.role }}"
+                                        data-bs-toggle="modal" data-bs-target="#editUserModal">
+                                        <i class="fas fa-edit"></i> Sửa
+                                    </button>
+                                    <button class="btn btn-outline-danger btn-sm delete-btn" data-id="{{ user.id }}">
+                                        <i class="fas fa-trash"></i> Xóa
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-footer">
+        Cửa Hàng Điện Tử - Quản Lý Quản Trị Viên © 2025
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script>
+        // Open Add Modal
+        function openAddModal() {
+            document.getElementById('addUserForm').reset();
+            document.getElementById('addUserModal').style.display = 'block';
+        }
+
+        // Close Add Modal
+        function closeAddModal() {
+            document.getElementById('addUserModal').style.display = 'none';
+        }
+
+        // Open Edit Modal
+        function openEditModal(userId, username, role) {
+            document.getElementById('editUserId').value = userId;
+            document.getElementById('editUserName').value = username;
+            document.getElementById('editUserRole').value = role.toLowerCase();
+            document.getElementById('editUserPassword').value = '';
+            document.getElementById('editUserModal').style.display = 'block';
+        }
+
+        // Close Edit Modal
+        function closeEditModal() {
+            document.getElementById('editUserModal').style.display = 'none';
+        }
+
+        // Add User
+        document.getElementById('addUserForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+
+            fetch('/admin/add_user', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Thêm quản trị viên thành công!');
+                        closeAddModal();
+                        location.reload();
+                    } else {
+                        alert('Lỗi: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    alert('Lỗi: ' + error);
+                });
+        });
+
+        // Edit User
+        document.getElementById('editUserForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+
+            fetch('/admin/edit_user', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Cập nhật quản trị viên thành công!');
+                        closeEditModal();
+                        location.reload();
+                    } else {
+                        alert('Lỗi: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    alert('Lỗi: ' + error);
+                });
+        });
+
+        // Delete User
+        function deleteUser(userId) {
+            if (confirm('Bạn có chắc muốn xóa quản trị viên này?')) {
+                fetch('/admin/delete_user', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ user_id: userId })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Xóa quản trị viên thành công!');
+                            location.reload();
+                        } else {
+                            alert('Lỗi: ' + data.error);
+                        }
+                    })
+                    .catch(error => {
+                        alert('Lỗi: ' + error);
+                    });
+            }
+        }
+
+        // Search Functionality
+        document.getElementById('searchButton').addEventListener('click', function () {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#usersTableBody tr');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function (event) {
+            if (event.target.className === 'modal') {
+                closeAddModal();
+                closeEditModal();
+            }
+        };
+    </script>
+</body>
+
+{% endblock %}

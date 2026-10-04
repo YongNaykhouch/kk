@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Ký Tài Khoản</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --light-bg: #f8f9fa;
+            --card-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            background: var(--secondary-gradient);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 20px 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .register-container {
+            max-width: 700px;
+            margin: 0 auto;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .card {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(50, 50, 93, 0.15), 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            background: var(--secondary-gradient);
+            color: white;
+            padding: 35px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            transform: skewY(-5deg) translateY(-50%);
+        }
+        
+        .card-header h3 {
+            position: relative;
+            z-index: 1;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .card-body {
+            padding: 40px 35px;
+            background-color: white;
+        }
+        
+        .logo-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--secondary-gradient);
+            color: white;
+            font-size: 36px;
+            margin-bottom: 15px;
+            box-shadow: 0 10px 20px rgba(240, 147, 251, 0.3);
+        }
+        
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #495057;
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-label i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+            color: #f5576c;
+        }
+        
+        .form-control, .form-select, .form-textarea {
+            border-radius: 12px;
+            padding: 14px 18px;
+            border: 2px solid #e8e8e8;
+            font-size: 16px;
+            transition: var(--transition);
+            background-color: #fdfdfd;
+        }
+        
+        .form-control:focus, .form-select:focus, .form-textarea:focus {
+            border-color: #f5576c;
+            box-shadow: 0 0 0 0.25rem rgba(245, 87, 108, 0.2);
+            background-color: white;
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .input-group-text {
+            background-color: transparent;
+            border: 2px solid #e8e8e8;
+            border-right: none;
+            border-radius: 12px 0 0 12px;
+        }
+        
+        .btn-register {
+            background: var(--secondary-gradient);
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 0.5px;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+        }
+        
+        .btn-register:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(245, 87, 108, 0.5);
+            background: linear-gradient(135deg, #e083ee 0%, #e94a5c 100%);
+        }
+        
+        .btn-register:active {
+            transform: translateY(0);
+        }
+        
+        .avatar-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #e8e8e8;
+            display: block;
+            margin: 0 auto 15px;
+            background-color: #f8f9fa;
+            overflow: hidden;
+        }
+        
+        .avatar-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            background: #e9ecef;
+            color: #adb5bd;
+            font-size: 40px;
+        }
+        
+        .avatar-upload {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .avatar-upload label {
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            border: 2px dashed #dee2e6;
+            transition: var(--transition);
+            font-weight: 500;
+            color: #6c757d;
+        }
+        
+        .avatar-upload label:hover {
+            background-color: #e9ecef;
+            border-color: #f5576c;
+            color: #f5576c;
+        }
+        
+        .avatar-upload i {
+            margin-right: 10px;
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: -10px;
+            margin-left: -10px;
+        }
+        
+        .form-col {
+            padding-right: 10px;
+            padding-left: 10px;
+            flex: 1 0 0%;
+            margin-bottom: 20px;
+        }
+        
+        .alert {
+            border-radius: 12px;
+            border: none;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .alert-danger {
+            background-color: #ffeaea;
+            color: #d9534f;
+            border-left: 4px solid #d9534f;
+        }
+        
+        .alert-success {
+            background-color: #eaffea;
+            color: #5cb85c;
+            border-left: 4px solid #5cb85c;
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 25px;
+            color: #6c757d;
+        }
+        
+        .login-link a {
+            color: #f5576c;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .login-link a:hover {
+            color: #d43f3a;
+            text-decoration: underline;
+        }
+        
+        .login-link i {
+            margin-right: 8px;
+        }
+        
+        .password-strength {
+            height: 5px;
+            border-radius: 5px;
+            margin-top: 8px;
+            background-color: #e9ecef;
+            overflow: hidden;
+        }
+        
+        .strength-meter {
+            height: 100%;
+            width: 0;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+        
+        @media (max-width: 768px) {
+            .form-col {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+            
+            .card-body {
+                padding: 30px 25px;
+            }
+            
+            .card-header {
+                padding: 25px 20px;
+            }
+            
+            .register-container {
+                padding: 0 15px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .form-col {
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div class="register-container">
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-user-plus me-2"></i>ĐĂNG KÝ TÀI KHOẢN MỚI</h3>
+            </div>
+
+            <div class="card-body">
+                <div class="logo-container">
+                    <div class="logo">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <h4 class="text-muted">Tạo tài khoản mới</h4>
+                    <p class="text-muted small">Điền thông tin bên dưới để đăng ký</p>
+                </div>
+
+                <!-- Flash message -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category=='error' else 'success' }} d-flex align-items-center">
+                            <i class="fas fa-{{ 'exclamation-triangle' if category=='error' else 'check-circle' }} me-3"></i>
+                            <div>{{ message }}</div>
+                        </div>
+                    {% endfor %}
+                {% endwith %}
+
+                <form method="POST" enctype="multipart/form-data" id="registerForm">
+                    <!-- Avatar Upload -->
+                    <div class="avatar-upload">
+                        <div class="avatar-preview" id="avatarPreview">
+                            <div class="avatar-placeholder">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                        <input type="file" class="d-none" name="avatar" id="avatarInput" accept="image/*">
+                        <label for="avatarInput">
+                            <i class="fas fa-cloud-upload-alt"></i>Tải lên ảnh đại diện
+                        </label>
+                    </div>
+
+                    <div class="form-row">
+
+                        <!-- USERNAME -->
+                        <div class="form-col">
+                            <label class="form-label">
+                                <i class="fas fa-user"></i>Tên đăng nhập
+                            </label>
+                            <input type="text" class="form-control" name="username"
+                                   placeholder="Nhập tên đăng nhập" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <!-- EMAIL -->
+                        <div class="form-col">
+                            <label class="form-label">
+                                <i class="fas fa-envelope"></i>Email
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-at"></i></span>
+                                <input type="email" class="form-control" name="email"
+                                       placeholder="example@email.com" required>
+                            </div>
+                        </div>
+
+                        <!-- PHONE -->
+                        <div class="form-col">
+                            <label class="form-label">
+                                <i class="fas fa-phone"></i>Số điện thoại
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
+                                <input type="tel" class="form-control" name="phone"
+                                       placeholder="0123 456 789">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <!-- PASSWORD -->
+                        <div class="form-col">
+                            <label class="form-label">
+                                <i class="fas fa-lock"></i>Mật khẩu
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                <input type="password" class="form-control" name="password"
+                                       placeholder="Nhập mật khẩu" required id="regPassword">
+                                <span class="input-group-text toggle-password" style="cursor: pointer;">
+                                    <i class="fas fa-eye" id="toggleRegPassword"></i>
+                                </span>
+                            </div>
+                            <div class="password-strength">
+                                <div class="strength-meter" id="passwordStrength"></div>
+                            </div>
+                        </div>
+
+                        <!-- CONFIRM PASSWORD -->
+                        <div class="form-col">
+                            <label class="form-label">
+                                <i class="fas fa-lock"></i>Xác nhận mật khẩu
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                <input type="password" class="form-control" name="confirm_password"
+                                       placeholder="Xác nhận mật khẩu" required id="regConfirmPassword">
+                                <span class="input-group-text toggle-password" style="cursor: pointer;">
+                                    <i class="fas fa-eye" id="toggleRegConfirmPassword"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <!-- DATE OF BIRTH -->
+                        <div class="form-col">
+                            <label class="form-label">
+                                <i class="fas fa-birthday-cake"></i>Ngày sinh
+                            </label>
+                            <input type="date" class="form-control" name="dob">
+                        </div>
+
+                        <!-- ADDRESS -->
+                        <div class="form-col">
+                            <label class="form-label">
+                                <i class="fas fa-map-marker-alt"></i>Địa chỉ
+                            </label>
+                            <textarea class="form-control" name="address" rows="3"
+                                      placeholder="Nhập địa chỉ của bạn"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- BUTTON -->
+                    <div class="d-grid mb-3">
+                        <button type="submit" class="btn btn-register">
+                            <i class="fas fa-user-plus me-2"></i>ĐĂNG KÝ TÀI KHOẢN
+                        </button>
+                    </div>
+
+                    <div class="login-link">
+                        <p>
+                            Đã có tài khoản?
+                            <a href="{{ url_for('login') }}">
+                                <i class="fas fa-sign-in-alt me-1"></i>Đăng nhập ngay
+                            </a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <p class="text-white small">
+                &copy; Hà Nội 2026 Hệ thống Quản lý. Bảo lưu mọi quyền.
+            </p>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Hiển thị/ẩn mật khẩu chính
+    document.getElementById('toggleRegPassword').addEventListener('click', function() {
+        const passwordInput = document.getElementById('regPassword');
+        const icon = this;
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+    
+    // Hiển thị/ẩn mật khẩu xác nhận
+    document.getElementById('toggleRegConfirmPassword').addEventListener('click', function() {
+        const passwordInput = document.getElementById('regConfirmPassword');
+        const icon = this;
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+    
+    // Xử lý hiển thị preview ảnh đại diện
+    document.getElementById('avatarInput').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('avatarPreview');
+                preview.innerHTML = `<img src="${e.target.result}" style="width: 100%; height: 100%; object-fit: cover;">`;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    // Kiểm tra độ mạnh của mật khẩu
+    document.getElementById('regPassword').addEventListener('input', function() {
+        const password = this.value;
+        const strengthMeter = document.getElementById('passwordStrength');
+        let strength = 0;
+        
+        // Kiểm tra độ dài
+        if (password.length >= 8) strength += 25;
+        
+        // Kiểm tra chữ hoa và chữ thường
+        if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength += 25;
+        
+        // Kiểm tra số
+        if (/\d/.test(password)) strength += 25;
+        
+        // Kiểm tra ký tự đặc biệt
+        if (/[^A-Za-z0-9]/.test(password)) strength += 25;
+        
+        // Cập nhật thanh độ mạnh
+        strengthMeter.style.width = `${strength}%`;
+        
+        // Đổi màu theo độ mạnh
+        if (strength < 50) {
+            strengthMeter.style.backgroundColor = '#dc3545';
+        } else if (strength < 75) {
+            strengthMeter.style.backgroundColor = '#0c06cd';
+        } else {
+            strengthMeter.style.backgroundColor = '#28a745';
+        }
+    });
+    
+    // Kiểm tra mật khẩu khớp
+    document.getElementById('regConfirmPassword').addEventListener('input', function() {
+        const password = document.getElementById('regPassword').value;
+        const confirmPassword = this.value;
+        
+        if (confirmPassword && password !== confirmPassword) {
+            this.style.borderColor = '#dc3545';
+            this.style.boxShadow = '0 0 0 0.25rem rgba(220, 53, 69, 0.25)';
+        } else {
+            this.style.borderColor = '#28a745';
+            this.style.boxShadow = '0 0 0 0.25rem rgba(40, 167, 69, 0.25)';
+        }
+    });
+    
+    // Hiệu ứng khi submit form
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+        const password = document.getElementById('regPassword').value;
+        const confirmPassword = document.getElementById('regConfirmPassword').value;
+        
+        // Kiểm tra mật khẩu khớp
+        if (password !== confirmPassword) {
+            e.preventDefault();
+            alert('Mật khẩu xác nhận không khớp! Vui lòng kiểm tra lại.');
+            return;
+        }
+        
+        const submitBtn = this.querySelector('button[type="submit"]');
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> ĐANG XỬ LÝ...';
+        submitBtn.disabled = true;
+    });
+</script>
+</body>
+</html>

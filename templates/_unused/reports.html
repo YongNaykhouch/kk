@@ -1,0 +1,183 @@
+{% extends "Admin.html" %}
+
+{# ================= MACRO FORMAT CURRENCY ================= #}
+{% macro format_currency(value) %}
+    {% if value %}
+        {{ "{:,.0f} ₫".format(value) }}
+    {% else %}
+        0 ₫
+    {% endif %}
+{% endmacro %}
+
+{% block title %}Báo Cáo - Admin Panel{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="page-title">
+        <h1><i class="fas fa-chart-bar me-2"></i> Báo Cáo & Thống Kê</h1>
+        <p>Phân tích dữ liệu và báo cáo chi tiết</p>
+    </div>
+    <div class="page-actions">
+        <button class="btn btn-primary" onclick="generateReport()">
+            <i class="fas fa-download me-2"></i> Xuất Báo Cáo
+        </button>
+    </div>
+</div>
+
+<!-- Summary Stats -->
+<div class="row mb-4">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card bg-gradient-primary text-white">
+            <div class="card-body">
+                <h6 class="text-white-50">Tổng Doanh Thu</h6>
+                <h3>{{ format_currency(total_revenue|default(0)) }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card bg-gradient-success text-white">
+            <div class="card-body">
+                <h6 class="text-white-50">Tổng Đơn Hàng</h6>
+                <h3>{{ total_orders|default(0) }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card bg-gradient-info text-white">
+            <div class="card-body">
+                <h6 class="text-white-50">Khách Hàng Mới</h6>
+                <h3>{{ new_customers|default(0) }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card bg-gradient-warning text-white">
+            <div class="card-body">
+                <h6 class="text-white-50">Sản Phẩm Bán Ra</h6>
+                <h3>{{ products_sold|default(0) }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts -->
+<div class="row mb-4">
+    <div class="col-lg-8 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Biểu Đồ Doanh Thu</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="salesChart" height="250"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Trạng Thái Đơn Hàng</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="ordersChart" height="250"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Top Products & Customers -->
+<div class="row">
+    <div class="col-lg-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Sản Phẩm Bán Chạy</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Sản phẩm</th>
+                            <th>Đã bán</th>
+                            <th>Doanh thu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in top_products|default([]) %}
+                        <tr>
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.quantity|default(0) }}</td>
+                            <td>{{ format_currency(product.revenue|default(0)) }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="3" class="text-center">Không có dữ liệu</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 mb-41">
+        <div class="card">
+            <div class="card-header1">
+                <h5>Khách Hàng Thân Thiết</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Khách hàng</th>
+                            <th>Số đơn</th>
+                            <th>Tổng chi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for customer in top_customers|default([]) %}
+                        <tr>
+                            <td>{{ customer.name }}</td>
+                            <td>{{ customer.orders|default(0) }}</td>
+                            <td>{{ format_currency(customer.total|default(0)) }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="3" class="text-center">Không có dữ liệu</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const salesChart = new Chart(document.getElementById('salesChart'), {
+    type: 'line',
+    data: {
+        labels: ['T2','T3','T4','T5','T6','T7','CN'],
+        datasets: [{
+            label: 'Doanh thu (triệu)',
+            data: [12,19,15,25,22,30,28],
+            borderWidth: 2
+        }]
+    }
+});
+
+const ordersChart = new Chart(document.getElementById('ordersChart'), {
+    type: 'doughnut',
+    data: {
+        labels: ['Chờ','Xử lý','Giao','Hoàn thành','Hủy'],
+        datasets: [{
+            data: [10,15,8,40,5]
+        }]
+    }
+});
+</script>
+{% endblock %}

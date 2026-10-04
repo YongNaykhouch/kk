@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Cửa Hàng Điện Tử{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Top Navbar -->
+    <div class="top-navbar">
+        <p>CHÀO MỪNG ĐẾN CỬA HÀNG ĐIỆN TỬ</p>
+
+        <div class="icons">
+            {% if session.get('username') %}
+            <!-- ADMIN -->
+            {% if session.get('role') == 'admin' %}
+            <a href="{{ url_for('admin_dashboard') }}">
+                <i class="fas fa-user-shield"></i> Admin Panel
+            </a>
+            {% else %}
+            <!-- USER -->
+            <a href="{{ url_for('profile') }}">
+                <i class="fas fa-user"></i> Hồ sơ
+            </a>
+            {% endif %}
+
+            <a href="{{ url_for('logout') }}">
+                <i class="fas fa-sign-out-alt"></i> Đăng xuất
+            </a>
+
+            {% else %}
+            <!-- GUEST -->
+            <a href="{{ url_for('register') }}">
+                <i class="fas fa-user-plus"></i> Đăng ký
+            </a>
+            <a href="{{ url_for('login') }}">
+                <i class="fas fa-sign-in-alt"></i> Đăng nhập
+            </a>
+            {% endif %}
+            <a href="{{ url_for('view_cart') }}" class="cart-icon">
+                <i class="fas fa-shopping-cart"></i> Cart
+                {% if session.cart %}
+                ({{ session.cart.values() | map(attribute='quantity') | sum }})
+                {% else %}
+                (0)
+                {% endif %}
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Navbar -->
+    <nav class="navbar navbar-expand-lg" id="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('index') }}" id="logo">
+                <span id="span1"></span>Cửa hàng <span>Điện Tử</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span><img src="{{ url_for('static', filename='images/menu.png') }}" alt="" width="30px"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ url_for('index') }}">Trang chủ</a>
+                    </li>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Danh mục
+                        </a>
+                        <ul class="dropdown-menu bg-primary text-white" aria-labelledby="navbarDropdown">
+                            <li><h6 class="dropdown-header text-primary">Điện Tử</h6></li>
+                            <li><a class="dropdown-item" href="{{ url_for('category_products', category='dienthoai') }}"><i class="fas fa-mobile-alt me-2"></i>Điện thoại</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('category_products', category='laptop') }}"><i class="fas fa-laptop me-2"></i>Laptop</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('category_products', category='dongho') }}"><i class="fas fa-watch me-2"></i>Đồng hồ thông minh</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('category_products', category='maytinhbanpc') }}"><i class="fas fa-desktop me-2"></i>Máy tính bàn</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><h6 class="dropdown-header text-success">Gia Dụng</h6></li>
+                            <li><a class="dropdown-item" href="{{ url_for('category_products', category='tulanh') }}"><i class="fas fa-snowflake me-2"></i>Tủ lạnh</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('category_products', category='quat') }}"><i class="fas fa-fan me-2"></i>Quạt</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('category_products', category='maygiatsay') }}"><i class="fas fa-tshirt me-2"></i>Máy giặt & sấy</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('category_products', category='beptu') }}"><i class="fas fa-fire-burner me-2"></i>Bếp từ</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('lienhe') }}">Liên hệ</a>
+
+                    </li>
+                </ul>
+                <form class="d-flex" action="{{ url_for('search') }}" method="GET">
+                        <input class="form-control me-2" type="search" name="q" placeholder="Tìm sản phẩm..." aria-label="Search">
+                        <button class="btn btn-outline-primary" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Bottom Navbar -->
+    <div class="bottom_navbar">
+        <ul>
+            <li><a href="{{ url_for('category_products', category='dienthoai') }}">Điện thoại</a></li>
+            <li><a href="{{ url_for('category_products', category='maytinhbanpc') }}">Máy Tính Bàn</a></li>
+            <li><a href="{{ url_for('category_products', category='tulanh') }}">Tủ lạnh</a></li>
+            <li><a href="{{ url_for('category_products', category='beptu') }}">Bếp Từ</a></li>
+            <li><a href="{{ url_for('category_products', category='dongho') }}">Đồng hồ</a></li>
+            <li><a href="{{ url_for('category_products', category='quat') }}">Quạt</a></li>
+            <li><a href="{{ url_for('category_products', category='laptop') }}">Laptop</a></li>
+            <li><a href="{{ url_for('category_products', category='maygiatsay') }}">Máy Giặt & Sấy</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 footer-contact">
+                        <h3>Cửa hàng điện tử</h3>
+                        <p>
+                            Viet Nam <br>
+                            Lao <br>
+                            Cambodia <br>
+                        </p>
+                        <strong>Phone:</strong>0917873816<br>
+                        <strong>Email:</strong> yongnaykhouch1@gmail.com <br>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 footer-links">
+                        <h4>Usefull Links</h4>
+                        <ul>
+                            <li><a href="#">Trang chủ</a></li>
+                            <li><a href="#">Về chúng tôi</a></li>
+                            <li><a href="#">Dịch vụ</a></li>
+                            <li><a href="#">Điều khoản sử dụng</a></li>
+                            <li><a href="#">Chính sách bảo mật</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 footer-links">
+                        <h4>Dịch vụ</h4>
+                        <ul>
+                            <li><a href="#">Tư vấn mua hàng</a></li>
+                            <li><a href="#">Bảo hành điện tử</a></li>
+                            <li><a href="#">Hỗ trợ kỹ thuật</a></li>
+                            <li><a href="#">Theo dõi đơn hàng</a></li>
+                            <li><a href="#">Trung tâm bảo hành</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 footer-links">
+                        <h4>Mạng xã hội</h4>
+                        <p>Theo dõi chúng tôi tại:</p>
+                        <div class="socail-links mt-3">
+                            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#"><i class="fa-brands fa-skype"></i></a>
+                            <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="container py-4">
+            <div class="copyright">
+                &copy; Copyright <strong><span>Cửa hàng điện tử</span></strong>. All Rights Reserved
+            </div>
+            <div class="credits">
+                Designed by <a href="#">YONG NAYKHOUCH</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="arrow" id="backToTop">
+        <i><img src="{{ url_for('static', filename='images/arrow.png') }}" alt="Lên đầu trang" width="50"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <script>
+        // Pass customer_id from session to JavaScript
+        const customerId = {{ session.customer_id | tojson if session.customer_id is defined and session.customer_id is not none else 0 | tojson }};
+
+        // Cart functionality
+        function addToCart(productId, name, price) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const existingItem = cart.find(item => item.product_id === productId);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    product_id: productId,
+                    name: name,
+                    price: price,
+                    quantity: 1
+                });
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+            alert('Đã thêm sản phẩm vào giỏ hàng!');
+        }
+
+        function updateCartDisplay() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartItems = document.getElementById('cartItems');
+            const cartCount = document.getElementById('cartCount');
+            const cartTotal = document.getElementById('cartTotal');
+            let total = 0;
+
+            if (cartItems) {
+                cartItems.innerHTML = '';
+                cart.forEach((item, index) => {
+                    const itemTotal = item.price * item.quantity;
+                    total += itemTotal;
+                    cartItems.innerHTML += `
+                        <tr>
+                            <td>${item.name}</td>
+                            <td>${item.quantity}</td>
+                            <td>${item.price.toLocaleString()} ₫</td>
+                            <td>${itemTotal.toLocaleString()} ₫</td>
+                            <td>
+                                <button onclick="removeFromCart(${index})" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                if (cartCount) cartCount.textContent = cart.length;
+                if (cartTotal) cartTotal.textContent = `Tổng Cộng: ${total.toLocaleString()} ₫`;
+            }
+        }
+
+        function removeFromCart(index) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+        }
+
+        // Back to top button
+        window.addEventListener('scroll', function () {
+            const backToTop = document.getElementById('backToTop');
+            if (backToTop) {
+                if (window.scrollY > 300) {
+                    backToTop.style.display = 'block';
+                } else {
+                    backToTop.style.display = 'none';
+                }
+            }
+        });
+
+        if (document.getElementById('backToTop')) {
+            document.getElementById('backToTop').addEventListener('click', function (e) {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        // Initialize cart display on page load
+        document.addEventListener('DOMContentLoaded', updateCartDisplay);
+    </script>
+
+    <style>
+        #backToTop {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99;
+            display: none;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        #backToTop:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+        }
+
+        /* Nút Thêm vào giỏ - viền vàng cam, nền trắng */
+        .btn-add-to-cart,
+        .btn-add-to-cart1 {
+            min-height: 54px;
+            padding: 0 20px;
+            font-size: 1.05rem;
+            color: #ff9900;
+            background-color: #ffffff;
+            border: 2.5px solid #ff9900;
+            border-radius: 50px;
+            transition: all 0.35s ease;
+            box-shadow: 0 4px 15px rgba(255, 153, 0, 0.15);
+            white-space: nowrap;
+        }
+
+        .btn-add-to-cart:hover,
+        .btn-add-to-cart1:hover {
+            background-color: #fff8e1;
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(255, 153, 0, 0.3);
+            color: #ff9900;
+        }
+
+        /* Nút Mua ngay - nền vàng cam đầy, chữ đen đậm */
+        .btn-buy-now {
+            min-height: 54px;
+            padding: 0 20px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #000000;
+            background-color: #ff9900;
+            border: none;
+            border-radius: 50px;
+            transition: all 0.35s ease;
+            box-shadow: 0 6px 20px rgba(255, 153, 0, 0.35);
+            white-space: nowrap;
+            text-transform: none;
+        }
+
+        .btn-buy-now:hover {
+            background-color: #ffb84d;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(255, 153, 0, 0.45);
+            color: #000;
+        }
+
+        /* Icon màu đúng */
+        .btn-add-to-cart i,
+        .btn-add-to-cart1 i {
+            color: #ff9900;
+        }
+
+        .btn-buy-now i {
+            color: #000;
+        }
+
+        /* Hiệu ứng ripple khi click */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: ripple-anim 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple-anim {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive: nhỏ hơn trên mobile nhưng vẫn 1 dòng */
+        @media (max-width: 576px) {
+            .product-actions {
+                gap: 12px;
+            }
+
+            .btn-add-to-cart,
+            .btn-add-to-cart1,
+            .btn-buy-now {
+                font-size: 0.95rem;
+                padding: 0 16px;
+                min-height: 50px;
+            }
+        }
+    </style>
+
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

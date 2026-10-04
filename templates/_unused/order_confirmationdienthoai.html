@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xác Nhận Đơn Hàng | Audiophile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand fs-2" href="{{ url_for('index') }}">
+                <i class="fas fa-headphones"></i> Audiophile
+            </a>
+        </div>
+    </nav>
+    <main class="py-5 flex-grow-1">
+        <div class="container">
+            <h2 class="mb-4 fw-bold text-success">Đặt Hàng Thành Công!</h2>
+            <p>Cảm ơn bạn đã đặt hàng. Mã đơn hàng: <strong>{{ order.order_id }}</strong></p>
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-receipt me-2"></i>Thông Tin Đơn Hàng</h5>
+                </div>
+                <div class="card-body">
+                    <h6 class="fw-bold">Thông tin khách hàng</h6>
+                    <p>
+                        Họ tên: {{ order.fullname }}<br>
+                        Số điện thoại: {{ order.phone }}<br>
+                        Email: {{ order.email }}<br>
+                        Địa chỉ: {{ order.address }}, {{ order.district }}, {{ order.city }}<br>
+                        Ghi chú: {{ order.note or 'Không có' }}
+                    </p>
+                    <hr>
+                    <h6 class="fw-bold">Sản phẩm</h6>
+                    {% for item in order.items|from_json %}
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="{{ item.image }}" alt="{{ item.name }}" class="me-3" style="width: 80px; height: 80px; object-fit: contain;">
+                        <div>
+                            <h6>{{ item.name }}</h6>
+                            <small>{{ item.quantity }} x {{ item.price|int|format('0,d') }}₫</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <hr>
+                    <h6 class="fw-bold">Tổng cộng</h6>
+                    <p>
+                        Tạm tính: {{ order.subtotal|int|format('0,d') }}₫<br>
+                        Phí vận chuyển: {{ order.shipping_fee|int|format('0,d') }}₫<br>
+                        Tổng cộng: {{ order.total|int|format('0,d') }}₫
+                    </p>
+                    <p>
+                        Phương thức vận chuyển: {{ 'Giao hàng tiêu chuẩn' if order.shipping_method == '30000' else 'Giao hàng nhanh' }}<br>
+                        Phương thức thanh toán: {{ {'cod': 'Thanh toán khi nhận hàng', 'bank': 'VNPAY', 'vnpay': 'VNPay'}[order.payment_method] }}
+                    </p>
+                </div>
+            </div>
+            <a href="{{ url_for('admin') }}" class="btn btn-primary mt-4">Quay về trang chủ</a>
+        </div>
+    </main>
+    <footer class="bg-dark text-light py-3 mt-auto">
+        <div class="container text-center">
+            <p class="mb-0">© 2025 Audiophile</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

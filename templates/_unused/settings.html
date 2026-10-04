@@ -1,0 +1,45 @@
+{% extends "Admin.html" %}
+{% block reports %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Admin Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold mb-6">Settings</h1>
+        {% if message %}
+            <p class="text-lg text-gray-700">{{ message }}</p>
+        {% else %}
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-semibold mb-4">System Settings</h2>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-bold mb-2" for="site-name">Site Name</label>
+                    <input type="text" id="site-name" class="w-full p-2 border rounded" placeholder="Enter site name">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-bold mb-2" for="currency">Currency</label>
+                    <select id="currency" class="w-full p-2 border rounded">
+                        <option value="VND">VND</option>
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-bold mb-2" for="maintenance">Maintenance Mode</label>
+                    <input type="checkbox" id="maintenance" class="mr-2">
+                    <span>Enable maintenance mode</span>
+                </div>
+                <button class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Save Settings</button>
+            </div>
+        {% endif %}
+        <a href="{{ url_for('admin_dashboard') }}" class="mt-4 inline-block text-blue-500 hover:underline">Back to Dashboard</a>
+    </div>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "Admin.html" %}
+
+{% block title %}Cập Nhật Đơn Hàng{% endblock %}
+{% block page_title %}Cập Nhật Trạng Thái Đơn Hàng{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form method="POST">
+            <div class="mb-3">
+                <label class="form-label">Mã Đơn</label>
+                <input type="text"
+                       class="form-control"
+                       value="{{ order.order_id }}"
+                       readonly>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Trạng Thái</label>
+                <select name="status" class="form-select" required>
+                    {% for s in ['pending','processing','shipped','completed','cancelled'] %}
+                        <option value="{{ s }}"
+                            {% if order.status == s %}selected{% endif %}>
+                            {{ s|capitalize }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="text-end">
+                <a href="{{ url_for('admin_orders') }}" class="btn btn-secondary">
+                    Quay lại
+                </a>
+                <button type="submit" class="btn btn-success">
+                    Lưu thay đổi
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

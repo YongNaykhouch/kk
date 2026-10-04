@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ sơ của tôi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 2.5fr;
+            gap: 40px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 50px 30px;
+        }
+
+        .avatar-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 25px;
+        }
+
+        .avatar {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid #667eea;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .avatar-placeholder {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: #667eea;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 70px;
+            font-weight: bold;
+            border: 6px solid #667eea;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .username {
+            font-size: 30px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .role {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+
+        .role.admin {
+            background: #e74c3c;
+        }
+
+        .details {
+            background: white;
+            border-radius: 20px;
+            padding: 50px 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .details h2 {
+            font-size: 26px;
+            margin-bottom: 35px;
+            color: #333;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 12px;
+            display: inline-block;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 18px;
+            background: #f8f9ff;
+            border-radius: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .info-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.15);
+        }
+
+        .info-item i {
+            font-size: 26px;
+            color: #667eea;
+            width: 35px;
+            text-align: center;
+        }
+
+        .info-content strong {
+            display: block;
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-content span {
+            color: #333;
+            font-size: 17px;
+            font-weight: 500;
+        }
+
+        .not-updated {
+            color: #aaa;
+            font-style: italic;
+        }
+
+        .actions {
+            margin-top: 40px;
+            text-align: center;
+            grid-column: 1 / -1;
+        }
+
+        .actions .btn {
+            padding: 12px 28px;
+            font-size: 16px;
+            margin: 0 10px;
+        }
+
+        @media (max-width: 868px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .avatar,
+            .avatar-placeholder {
+                width: 140px;
+                height: 140px;
+                font-size: 55px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Trái: Card Avatar -->
+        <div class="profile-card">
+            <div class="avatar-container">
+                {% if user.avatar %}
+                <img src="{{ url_for('static', filename='uploads/' ~ user.avatar) }}" alt="Avatar" class="avatar">
+                {% else %}
+                <div class="avatar-placeholder">
+                    {{ user.username[0]|upper }}
+                </div>
+                {% endif %}
+            </div>
+            <h1 class="username">{{ user.username }}</h1>
+            <p class="role {% if user.role == 'admin' %}admin{% endif %}">
+                {{ 'Quản trị viên' if user.role == 'admin' else 'Người dùng' }}
+            </p>
+        </div>
+
+        <!-- Phải: Thông tin chi tiết -->
+        <div class="details">
+            <h2>Thông tin hồ sơ</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <i class="fas fa-id-badge"></i>
+                    <div class="info-content">
+                        <strong>Mã người dùng</strong>
+                        <span>#{{ user.id }}</span>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <div class="info-content">
+                        <strong>Email</strong>
+                        <span>{% if user.email %}{{ user.email }}{% else %}<span class="not-updated">Chưa cập
+                                nhật</span>{% endif %}</span>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <div class="info-content">
+                        <strong>Số điện thoại</strong>
+                        <span>{% if user.phone %}{{ user.phone }}{% else %}<span class="not-updated">Chưa cập
+                                nhật</span>{% endif %}</span>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <div class="info-content">
+                        <strong>Ngày sinh</strong>
+                        <span>{% if user.dob %}{{ user.dob }}{% else %}<span class="not-updated">Chưa cập nhật</span>{%
+                            endif %}</span>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div class="info-content">
+                        <strong>Địa chỉ</strong>
+                        <span>{% if user.address %}{{ user.address }}{% else %}<span class="not-updated">Chưa cập
+                                nhật</span>{% endif %}</span>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class="fas fa-user-shield"></i>
+                    <div class="info-content">
+                        <strong>Vai trò</strong>
+                        <span>{{ 'Quản trị viên' if user.role == 'admin' else 'Người dùng thường' }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <a href="{{ url_for('index') }}" class="btn btn-outline-primary me-3">
+                    <i class="fas fa-store me-2"></i>Quay lại cửa hàng
+                </a>
+
+                <a href="{{ url_for('edit_profile') }}" class="btn btn-warning me-3">
+                    <i class="fas fa-edit me-2"></i>Chỉnh sửa hồ sơ
+                </a>
+
+                {% if user.role == 'admin' %}
+                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-danger">
+                    <i class="fas fa-shield-alt me-2"></i>Bảng điều khiển Admin
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

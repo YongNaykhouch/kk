@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Điện Thoại - Cửa Hàng Điện Tử</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="top-navbar">
+    <p>CHÀO MỪNG ĐẾN CỬA HÀNG ĐIỆN TỬ</p>
+    <div class="icons">
+      {% if session.username %}
+      <a href="{{ url_for('admin') }}"><i class="fas fa-user"></i> Hồ sơ</a>
+      <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+      {% else %}
+      <a href="{{ url_for('login') }}"><img src="{{ url_for('static', filename='images/register.png') }}" alt="" width="18px">Đăng ký</a>
+      <a href="{{ url_for('register') }}"><img src="{{ url_for('static', filename='images/register.png') }}" alt="" width="18px"> Đăng nhập</a>
+      {% endif %}
+      <a href="#" data-bs-toggle="modal" data-bs-target="#cartModal" class="cart-icon">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count" id="cartCount">0</span>
+      </a>
+    </div>
+  </div>
+
+  <nav class="navbar navbar-expand-lg" id="navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{{ url_for('index') }}" id="logo"><span id="span1"></span>Cửa hàng <span>Điện Tử</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+        <span><img src="{{ url_for('static', filename='images/menu.png') }}" alt="" width="30px"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Trang chủ</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Sản phẩm</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Danh mục</a>
+            <ul class="dropdown-menu bg-primary text-white">
+              <li class="dropdown-header">Điện Tử</li>
+              <li><a class="dropdown-item" href="{{ url_for('dien_thoai') }}">Điện thoại</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('may_anh') }}">Máy ảnh</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('laptop') }}">Laptop</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('man_hinh_may_tinh') }}">Màn hình máy tính</a></li>
+              <li class="dropdown-divider"></li>
+              <li class="dropdown-header">Đồ Gia Dụng</li>
+              <li><a class="dropdown-item" href="{{ url_for('tu_lanh') }}">Tủ lạnh</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('dieu_hoa') }}">Điều hòa</a></li>
+              <li class="dropdown-divider"></li>
+              <li class="dropdown-header">Phụ Kiện</li>
+              <li><a class="dropdown-item" href="{{ url_for('dong_ho') }}">Đồng hồ</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('tai_nghe') }}">Tai nghe</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('lienhe') }}">Liên hệ</a></li>
+        </ul>
+        <form class="d-flex" id="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Tìm</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <div class="bottom_navbar">
+    <ul>
+      <li><a href="{{ url_for('dien_thoai') }}">Điện thoại</a></li>
+      <li><a href="{{ url_for('may_anh') }}">Máy ảnh</a></li>
+      <li><a href="{{ url_for('tu_lanh') }}">Tủ lạnh</a></li>
+      <li><a href="{{ url_for('dieu_hoa') }}">Điều hòa</a></li>
+      <li><a href="{{ url_for('dong_ho') }}">Đồng hồ</a></li>
+      <li><a href="{{ url_for('tai_nghe') }}">Tai nghe</a></li>
+      <li><a href="{{ url_for('laptop') }}">Laptop</a></li>
+      <li><a href="{{ url_for('man_hinh_may_tinh') }}">Màn hình máy tính</a></li>
+    </ul>
+  </div>
+
+  <!-- Breadcrumb -->
+  <div class="container my-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Trang chủ</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Điện thoại</li>
+      </ol>
+    </nav>
+  </div>
+
+  <!-- Product Cards -->
+  <div class="container my-5" style="background-color: #ffffff;">
+    <h1 class="text-center text-dark mb-4">Danh Sách Điện Thoại</h1>
+    <div class="row">
+      <!-- Sản phẩm mẫu (khi products rỗng) -->
+      <div class="col-md-3 py-3">
+        <div class="card shadow-lg border-0 rounded-3 h-100 d-flex flex-column">
+          <img src="https://www.lbtechreviews.com/wp-content/uploads/2024/02/SamsungGalaxyS24Ultra_TOP-1080x608.jpeg" alt="Samsung Galaxy S24 Ultra" class="card-img-top rounded-top" style="object-fit: contain; height: 200px;">
+          <div class="card-body text-center d-flex flex-column justify-content-between">
+            <div>
+              <h5 class="fw-bold mb-2">Samsung Galaxy S24 Ultra</h5>
+              <p class="mb-2">Thương Hiệu: Samsung</p>
+              <div class="star my-2">
+                <i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i>
+              </div>
+              <h4 class="text-danger fw-bold mb-3">35.000.000 ₫</h4>
+            </div>
+            <button class="btn btn-warning fw-bold rounded-pill py-2" onclick="addToCart('1', 'Samsung Galaxy S24 Ultra', 35000000)">
+              <i class="fa-solid fa-cart-shopping me-2"></i> Đặt mua
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 py-3">
+        <div class="card shadow-lg border-0 rounded-3 h-100 d-flex flex-column">
+          <img src="https://m.media-amazon.com/images/I/71MDUw-2AGL._AC_UF350,350_QL80_.jpg" alt="iPhone 15 Pro Max" class="card-img-top rounded-top" style="object-fit: contain; height: 200px;">
+          <div class="card-body text-center d-flex flex-column justify-content-between">
+            <div>
+              <h5 class="fw-bold mb-2">iPhone 15 Pro Max</h5>
+              <p class="mb-2">Thương Hiệu: Apple</p>
+              <div class="star my-2">
+                <i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i>
+              </div>
+              <h4 class="text-danger fw-bold mb-3">38.000.000 ₫</h4>
+            </div>
+            <button class="btn btn-warning fw-bold rounded-pill py-2" onclick="addToCart('2', 'iPhone 15 Pro Max', 38000000)">
+              <i class="fa-solid fa-cart-shopping me-2"></i> Đặt mua
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 py-3">
+        <div class="card shadow-lg border-0 rounded-3 h-100 d-flex flex-column">
+          <img src="https://lh3.googleusercontent.com/fer5pWbY8pskwY33GvrNk79shi0dJ7AwlZ3FDtys2CXWLoLvosFJVheny758jgQ21a0v02En4OGkExMAqxY705QxA-B_82JaaA=s0" alt="Google Pixel 9 Pro" class="card-img-top rounded-top" style="object-fit: contain; height: 200px;">
+          <div class="card-body text-center d-flex flex-column justify-content-between">
+            <div>
+              <h5 class="fw-bold mb-2">Google Pixel 9 Pro</h5>
+              <p class="mb-2">Thương Hiệu: Google</p>
+              <div class="star my-2">
+                <i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i>
+              </div>
+              <h4 class="text-danger fw-bold mb-3">28.000.000 ₫</h4>
+            </div>
+            <button class="btn btn-warning fw-bold rounded-pill py-2" onclick="addToCart('3', 'Google Pixel 9 Pro', 28000000)">
+              <i class="fa-solid fa-cart-shopping me-2"></i> Đặt mua
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 py-3">
+        <div class="card shadow-lg border-0 rounded-3 h-100 d-flex flex-column">
+          <img src="https://lh3.googleusercontent.com/sitesv/AAzXCkeRsZwhrsp0tB2pHmz-uVavPxPTYy-7djUrfa-A5X6-emsxUELRKF62VIqyLMtZRpkhbSaftFyINKqUYI__PilstvWavJxEzbDUlYuMB7rMF9F6UQRofRz8wl6U8T6WbVJsUvvRcA5Gyt3iopk9ipa6R4TWUHimOWlS41zsEa6OAmvnnsDmVomB88gRP4ar1UzbhyjYgFYvS7bEN9QJe5KSIFw3uu0uCzWus2U=w1280" alt="Xiaomi 14 Pro" class="card-img-top rounded-top" style="object-fit: contain; height: 200px;">
+          <div class="card-body text-center d-flex flex-column justify-content-between">
+            <div>
+              <h5 class="fw-bold mb-2">Xiaomi 14 Pro</h5>
+              <p class="mb-2">Thương Hiệu: Xiaomi</p>
+              <div class="star my-2">
+                <i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i>
+              </div>
+              <h4 class="text-danger fw-bold mb-3">22.000.000 ₫</h4>
+            </div>
+            <button class="btn btn-warning fw-bold rounded-pill py-2" onclick="addToCart('4', 'Xiaomi 14 Pro', 22000000)">
+              <i class="fa-solid fa-cart-shopping me-2"></i> Đặt mua
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 py-3">
+        <div class="card shadow-lg border-0 rounded-3 h-100 d-flex flex-column">
+          <img src="https://lh3.googleusercontent.com/sitesv/AAzXCkeA1ztdIGLooAtJfAUmhdUod9RJScYBVL7a59n2rP6iiZPTT_wdoOrz7U8cUif2iWVz6xxalAVD9Zy-7Xj3qcT6uuLIEr4pUOTknFK3ZfSgbjkIo3a2wTMqeXXrsjwaBKl5s34OBM1ta7O53lUmz_4ACEe2tLw6GrNW3aOX4nBta3zGr0O5IKhdWl7Qm82m9LdVPxNb8FB7iauXKNVVZqE5Ivtxl8FuO3aiOZE=w1280" alt="Oppo Find X7 Ultra" class="card-img-top rounded-top" style="object-fit: contain; height: 200px;">
+          <div class="card-body text-center d-flex flex-column justify-content-between">
+            <div>
+              <h5 class="fw-bold mb-2">Oppo Find X7 Ultra</h5>
+              <p class="mb-2">Thương Hiệu: Oppo</p>
+              <div class="star my-2">
+                <i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i>
+              </div>
+              <h4 class="text-danger fw-bold mb-3">25.000.000 ₫</h4>
+            </div>
+            <button class="btn btn-warning fw-bold rounded-pill py-2" onclick="addToCart('5', 'Oppo Find X7 Ultra', 25000000)">
+              <i class="fa-solid fa-cart-shopping me-2"></i> Đặt mua
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 py-3">
+        <div class="card shadow-lg border-0 rounded-3 h-100 d-flex flex-column">
+          <img src="https://www.notebookcheck.net/fileadmin/Notebooks/News/_nc3/mate60pronoglobal96.jpg" alt="Huawei Mate 60 Pro" class="card-img-top rounded-top" style="object-fit: contain; height: 200px;">
+          <div class="card-body text-center d-flex flex-column justify-content-between">
+            <div>
+              <h5 class="fw-bold mb-2">Huawei Mate 60 Pro</h5>
+              <p class="mb-2">Thương Hiệu: Huawei</p>
+              <div class="star my-2">
+                <i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i>
+              </div>
+              <h4 class="text-danger fw-bold mb-3">30.000.000 ₫</h4>
+            </div>
+            <button class="btn btn-warning fw-bold rounded-pill py-2" onclick="addToCart('6', 'Huawei Mate 60 Pro', 30000000)">
+              <i class="fa-solid fa-cart-shopping me-2"></i> Đặt mua
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer (copy nguyên từ index.html) -->
+  <footer id="footer">
+    <!-- ... (dán toàn bộ phần footer từ index.html) ... -->
+  </footer>
+
+  <!-- Modal Giỏ Hàng (copy nguyên từ index.html) -->
+  <div class="modal fade" id="cartModal"> <!-- ... --> </div>
+
+  <a href="#" class="arrow"><i><img src="./images/arrow.png" alt=""></i></a>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <script>
+    // Copy toàn bộ script cart từ index.html
+    const customerId = {{ session.customer_id | tojson if session.customer_id is defined and session.customer_id is not none else 0 | tojson }};
+    // ... (toàn bộ function addToCart, updateCartDisplay, v.v.)
+    document.addEventListener('DOMContentLoaded', updateCartDisplay);
+  </script>
+</body>
+</html>

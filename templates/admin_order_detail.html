@@ -1,0 +1,67 @@
+{% extends "Admin.html" %}
+
+{% block title %}Chi Tiết Đơn Hàng #{{ order.order_id[:8] }}{% endblock %}
+{% block page_title %}Chi Tiết Đơn Hàng{% endblock %}
+{% block page_subtitle %}Mã đơn: #{{ order.order_id[:8] }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-list me-2"></i>Chi tiết sản phẩm</h5>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-striped mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Sản phẩm</th>
+                            <th class="text-center">SL</th>
+                            <th class="text-end">Giá</th>
+                            <th class="text-end">Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                        <tr>
+                            <td><strong>{{ item.product_name }}</strong></td>
+                            <td class="text-center">{{ item.quantity }}</td>
+                            <td class="text-end">{{ "{:,.0f} ₫".format(item.price) }}</td>
+                            <td class="text-end text-danger fw-bold">{{ "{:,.0f} ₫".format(item.subtotal) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot class="table-dark">
+                        <tr>
+                            <td colspan="3" class="text-end fw-bold fs-5">Tổng cộng:</td>
+                            <td class="text-end text-danger fw-bold fs-4">{{ "{:,.0f} ₫".format(order.total_price) }}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-user me-2"></i>Thông tin khách hàng</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Họ tên:</strong> {{ order.username }}</p>
+                <p><strong>Email:</strong> {{ order.email }}</p>
+                <p><strong>SĐT:</strong> {{ order.phone }}</p>
+                <p><strong>Địa chỉ:</strong><br>{{ order.address }}</p>
+                <p><strong>Ngày đặt:</strong></p>
+                <p><strong>Trạng thái:</strong>
+                    <span class="badge bg-warning fs-6">Chờ xử lý</span>
+                </p>
+            </div>
+        </div>
+
+        <a href="{{ url_for('admin_orders') }}" class="btn btn-secondary w-100">
+            <i class="fas fa-arrow-left me-2"></i>Quay lại danh sách
+        </a>
+    </div>
+</div>
+{% endblock %}

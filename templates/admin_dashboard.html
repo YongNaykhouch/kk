@@ -1,0 +1,856 @@
+{% extends "Admin.html" %}
+
+{# ================== MACRO FORMAT TIỀN ================== #}
+{% macro format_currency(value) -%}
+{{ "{:,.0f} ₫".format(value|float) }}
+{%- endmacro %}
+
+{% block title %}
+{% if page == 'products' %}Quản Lý Sản Phẩm
+{% elif page == 'orders' %}Quản Lý Đơn Hàng
+{% elif page == 'order_list' %}Đơn Hàng
+{% elif page == 'customers' %}Quản Lý Khách Hàng
+{% elif page == 'reports' %}Báo Cáo & Thống Kê
+{% else %}Dashboard{% endif %}
+{% endblock %}
+
+{% block page_title %}
+{% if page == 'products' %}Quản Lý Sản Phẩm
+{% elif page == 'orders' %}Quản Lý Đơn Hàng
+{% elif page == 'order_list' %}Đơn Hàng
+{% elif page == 'customers' %}Quản Lý Khách Hàng
+{% elif page == 'reports' %}Báo Cáo & Thống Kê
+{% else %}Dashboard{% endif %}
+{% endblock %}
+
+{% block page_subtitle %}
+{% if page == 'products' %}
+Danh sách và thêm/sửa/xóa sản phẩm
+{% elif page == 'orders' %}
+Theo dõi và xử lý đơn hàng
+{% elif page == 'order_list' %}
+Tra cứu và xem lịch sử đơn hàng
+{% elif page == 'customers' %}
+Thông tin và thống kê khách hàng
+{% elif page == 'reports' %}
+Phân tích doanh thu, sản phẩm bán chạy và khách hàng
+{% else %}
+Tổng quan hệ thống
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<!-- ================== STATS CARDS ================== -->
+<div class="row mb-4 fade-in">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stats-card users">
+            <div class="icon"><i class="fas fa-users"></i></div>
+            <h3>{{ total_users|default(0) }}</h3>
+            <p>Tổng Người Dùng</p>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stats-card products">
+            <div class="icon"><i class="fas fa-box"></i></div>
+            <h3>{{ total_products|default(0) }}</h3>
+            <p>Tổng Sản Phẩm</p>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stats-card pending">
+            <div class="icon"><i class="fas fa-clock"></i></div>
+            <h3>{{ pending_count|default(0) }}</h3>
+            <p>Đơn Hàng Chờ</p>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stats-card revenue">
+            <div class="icon"><i class="fas fa-money-bill-wave"></i></div>
+            <h3>{{ format_currency(total_revenue|default(0)) }}</h3>
+            <p>Doanh Thu (Hoàn thành)</p>
+        </div>
+    </div>
+</div>
+
+<!-- ================== CONDITIONAL CONTENT ================== -->
+{% if page == 'products' %}
+<!-- ================== PRODUCTS ================== -->
+<div class="mb-4 text-end">
+    <a href="{{ url_for('admin_add_product') }}" class="btn btn-success btn-lg">
+        <i class="fas fa-plus me-2"></i>Thêm Sản Phẩm
+    </a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="text-center" style="width:60px;">#</th>
+                        <th style="width:100px;">Hình Ảnh</th>
+                        <th>Tên Sản Phẩm</th>
+                        <th>Danh Mục</th>
+                        <th>Thương Hiệu</th>
+                        <th class="text-end">Giá Bán</th>
+                        <th class="text-center">Số Lượng</th>
+                        <th class="text-center">Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if products %}
+                    {% for p in products %}
+                    <tr>
+                        <td class="text-center text-muted">{{ loop.index }}</td>
+                        <td>
+                            {% if p.image %}
+                            <img src="{{ url_for('static', filename='uploads/' ~ p.image) }}" class="rounded shadow-sm"
+                                style="width:70px;height:70px;object-fit:cover;" alt="{{ p.name }}">
+                            {% else %}
+                            <div class="bg-light border rounded d-flex align-items-center justify-content-center"
+                                style="width:70px;height:70px;">
+                                <i class="fas fa-image text-muted fa-2x"></i>
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td><strong>{{ p.name }}</strong></td>
+                        <td>{{ p.category or 'Chưa phân loại' }}</td>
+                        <td>{{ p.brand or '-' }}</td>
+                        <td class="text-end text-primary fw-bold">{{ format_currency(p.price) }}</td>
+                        <td class="text-center">{{ p.stock if p.stock is not none else 0 }}</td>
+                        <td class="text-center">
+                            <!-- Edit Button -->
+                            <a href="{{ url_for('admin_edit_product', product_id=p.id) }}"
+                                class="btn btn-sm btn-warning text-white me-1" title="Sửa sản phẩm">
+                                <i class="fas fa-edit"></i>
+                            </a>
+
+                            <!-- Delete Button (with confirmation) -->
+                            <form action="{{ url_for('admin_delete_product', product_id=p.id) }}" method="POST"
+                                style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm \"
+                                {{ p.name }}\" không? Hành động này không thể hoàn tác!');">
+                                <button type="submit" class="btn btn-sm btn-danger" title="Xóa sản phẩm">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td colspan="8" class="text-center py-5 text-muted">
+                            <i class="fas fa-box-open fa-3x mb-3 d-block"></i>
+                            Chưa có sản phẩm nào.
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% elif page == 'orders' %}
+<!-- ================== FILTER TRẠNG THÁI ĐƠN HÀNG ================== -->
+<div class="mb-4">
+    <h5 class="fw-bold text-primary mb-3">
+        <i class="fas fa-filter me-2"></i>Lọc theo trạng thái
+    </h5>
+    <div class="btn-group flex-wrap gap-2" role="group">
+        <a href="{{ url_for('admin_orders') }}"
+            class="btn {{ 'btn-primary' if not status else 'btn-outline-primary' }} btn-sm">
+            <i class="fas fa-list me-1"></i>Tất cả
+            <span class="badge bg-light text-dark ms-1">{{ counts.all }}</span>
+        </a>
+        <a href="{{ url_for('admin_orders', status='pending') }}"
+            class="btn {{ 'btn-warning' if status == 'pending' else 'btn-outline-warning' }} btn-sm">
+            <i class="fas fa-clock me-1"></i>Chờ xác nhận
+            <span class="badge bg-light text-dark ms-1">{{ counts.pending }}</span>
+        </a>
+        <a href="{{ url_for('admin_orders', status='processing') }}"
+            class="btn {{ 'btn-info' if status == 'processing' else 'btn-outline-info' }} btn-sm">
+            <i class="fas fa-cog me-1"></i>Đang xử lý
+            <span class="badge bg-light text-dark ms-1">{{ counts.processing }}</span>
+        </a>
+        <a href="{{ url_for('admin_orders', status='shipped') }}"
+            class="btn {{ 'btn-primary' if status == 'shipped' else 'btn-outline-primary' }} btn-sm">   
+            <i class="fas fa-truck me-1"></i>Đang giao
+            <span class="badge bg-light text-dark ms-1">{{ counts.shipped }}</span>
+        </a>
+        <a href="{{ url_for('admin_orders', status='completed') }}" 
+            class="btn {{ 'btn-success' if status == 'completed' else 'btn-outline-success' }} btn-sm">
+            <i class="fas fa-check-circle me-1"></i>Đã giao
+            <span class="badge bg-light text-dark ms-1">{{ counts.completed }}</span>
+        </a>
+        <a href="{{ url_for('admin_orders', status='cancelled') }}"
+            class="btn {{ 'btn-danger' if status == 'cancelled' else 'btn-outline-danger' }} btn-sm">
+            <i class="fas fa-times-circle me-1"></i>Đã hủy
+            <span class="badge bg-light text-dark ms-1">{{ counts.cancelled }}</span>
+        </a>
+    </div>
+</div>
+
+<!-- ================== ORDERS LIST ================== -->
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Mã Đơn</th>
+                        <th>Khách Hàng</th>
+                        <th>SĐT</th>
+                        <th class="text-end">Tổng Tiền</th>
+                        <th>Ngày Đặt</th>
+                        <th>Trạng Thái</th>
+                        <th class="text-center">Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if orders %}
+                    {% for o in orders %}
+                    <tr>
+                        <td><strong class="text-primary">#{{ o.order_id[:10] }}</strong></td>
+                        <td>
+                            <strong>{{ o.username }}</strong><br>
+                            <small class="text-muted">{{ o.email }}</small>
+                        </td>
+                        <td>{{ o.phone or 'Chưa có' }}</td>
+                        <td class="text-end fw-bold text-danger">{{ format_currency(o.total_price) }}</td>
+                        <td>{{ o.created_at.strftime('%d/%m/%Y') }}<br>
+                            <small class="text-muted">{{ o.created_at.strftime('%H:%M') }}</small>
+                        </td>
+                        <td>
+                            {% if o.status == 'pending' %}
+                            <span class="badge bg-warning text-dark">Chờ xác nhận</span>
+                            {% elif o.status == 'processing' %}
+                            <span class="badge bg-info">Đang xử lý</span>
+                            {% elif o.status == 'shipped' %}
+                            <span class="badge bg-primary">Đang giao</span>
+                            {% elif o.status == 'completed' %}
+                            <span class="badge bg-success">Đã giao</span>
+                            {% elif o.status == 'cancelled' %}
+                            <span class="badge bg-danger">Đã hủy</span>
+                            {% else %}
+                            <span class="badge bg-secondary">{{ o.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            {% if o.status == 'pending' %}
+                            <form method="POST" action="{{ url_for('admin_edit_order', order_id=o.order_id) }}"
+                                class="d-inline" onsubmit="return confirm('Xác nhận đơn hàng này?');">
+                                <input type="hidden" name="status" value="processing">
+                                <button type="submit" class="btn btn-sm btn-outline-success me-1"
+                                    title="Xác nhận đơn hàng" aria-label="Xác nhận đơn hàng">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            </form>
+                            {% endif %}
+                            <a href="{{ url_for('admin_order_detail', order_id=o.order_id) }}"
+                                class="btn btn-sm btn-outline-primary" title="Xem chi tiết">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <a href="{{ url_for('admin_edit_order', order_id=o.order_id) }}"
+                                class="btn btn-sm btn-outline-warning" title="Cập nhật trạng thái">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form method="POST" action="{{ url_for('admin_delete_order', order_id=o.order_id) }}"
+                                style="display:inline;" onsubmit="return confirm('Xóa đơn hàng này vĩnh viễn?');">
+                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Xóa">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center py-5 text-muted">
+                            <i class="fas fa-receipt fa-3x mb-3"></i><br>
+                            Không có đơn hàng nào ở trạng thái này.
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% elif page == 'order_list' %}
+<!-- ================== ĐƠN HÀNG - TRA CỨU HÓA ĐƠN ================== -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="fw-bold text-primary mb-3">
+            <i class="fas fa-magnifying-glass-chart me-2"></i>Tra cứu hóa đơn
+        </h5>
+        <form method="GET" action="{{ url_for('admin_order_list') }}" class="row g-2 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label mb-1 small fw-semibold">Từ khóa</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="fas fa-search text-muted"></i></span>
+                    <input type="text" name="q" value="{{ keyword }}" class="form-control"
+                        placeholder="Mã đơn, tên khách hàng, email hoặc SĐT..." autocomplete="off">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label mb-1 small fw-semibold">Trạng thái</label>
+                <select name="status" class="form-select">
+                    <option value="" {{ 'selected' if not status else '' }}>-- Tất cả --</option>
+                    <option value="pending" {{ 'selected' if status == 'pending' else '' }}>Chờ xác nhận</option>
+                    <option value="processing" {{ 'selected' if status == 'processing' else '' }}>Đang xử lý</option>
+                    <option value="shipped" {{ 'selected' if status == 'shipped' else '' }}>Đang giao</option>
+                    <option value="completed" {{ 'selected' if status == 'completed' else '' }}>Đã giao</option>
+                    <option value="cancelled" {{ 'selected' if status == 'cancelled' else '' }}>Đã hủy</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label mb-1 small fw-semibold">Từ ngày</label>
+                <input type="date" name="date_from" value="{{ date_from }}" class="form-control">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label mb-1 small fw-semibold">Đến ngày</label>
+                <input type="date" name="date_to" value="{{ date_to }}" class="form-control">
+            </div>
+            <div class="col-md-2 d-flex gap-2">
+                <button type="submit" class="btn btn-primary flex-fill">
+                    <i class="fas fa-filter me-1"></i>Lọc
+                </button>
+                <a href="{{ url_for('admin_order_list') }}" class="btn btn-outline-secondary" title="Xóa lọc">
+                    <i class="fas fa-rotate-left"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Thống kê nhanh -->
+<div class="d-flex flex-wrap gap-2 mb-3 align-items-center">
+    <span class="badge bg-secondary">Tổng: {{ summary.total }}</span>
+    <span class="badge bg-warning text-dark">Chờ xác nhận: {{ summary.pending }}</span>
+    <span class="badge bg-info text-dark">Đang xử lý: {{ summary.processing }}</span>
+    <span class="badge bg-primary">Đang giao: {{ summary.shipped }}</span>
+    <span class="badge bg-success">Đã giao: {{ summary.completed }}</span>
+    <span class="badge bg-danger">Đã hủy: {{ summary.cancelled }}</span>
+    <span class="badge bg-dark">Kết quả lọc: {{ total_results }}</span>
+    <span class="badge bg-success">
+        <i class="fas fa-coins me-1"></i>Tổng tiền: {{ format_currency(filtered_amount) }}
+    </span>
+    <a href="{{ url_for('admin_orders') }}" class="btn btn-sm btn-outline-secondary ms-auto">
+        <i class="fas fa-tasks me-1"></i>Sang trang Xử lý đơn
+    </a>
+</div>
+
+<!-- Bảng đơn hàng -->
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="text-center" style="width:60px;">STT</th>
+                        <th>Mã Đơn</th>
+                        <th>Khách Hàng</th>
+                        <th>SĐT</th>
+                        <th class="text-center">SL SP</th>
+                        <th class="text-end">Tổng Tiền</th>
+                        <th>Ngày Đặt</th>
+                        <th>Trạng Thái</th>
+                        <th class="text-center" style="width:90px;">Chi Tiết</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if orders %}
+                    {% for o in orders %}
+                    <tr>
+                        <td class="text-center text-muted small">{{ (page_num - 1) * per_page + loop.index }}</td>
+                        <td><strong class="text-primary">#{{ o.order_id[:10] }}</strong></td>
+                        <td>
+                            <strong>{{ o.username }}</strong><br>
+                            <small class="text-muted">{{ o.email }}</small>
+                        </td>
+                        <td>{{ o.phone or 'Chưa có' }}</td>
+                        <td class="text-center">
+                            <span class="badge bg-secondary">{{ o.item_count }}</span>
+                        </td>
+                        <td class="text-end fw-bold text-danger">{{ format_currency(o.total_price) }}</td>
+                        <td>{{ o.created_at.strftime('%d/%m/%Y') }}<br>
+                            <small class="text-muted">{{ o.created_at.strftime('%H:%M') }}</small>
+                        </td>
+                        <td>
+                            {% if o.status == 'pending' %}
+                            <span class="badge bg-warning text-dark">Chờ xác nhận</span>
+                            {% elif o.status == 'processing' %}
+                            <span class="badge bg-info">Đang xử lý</span>
+                            {% elif o.status == 'shipped' %}
+                            <span class="badge bg-primary">Đang giao</span>
+                            {% elif o.status == 'completed' %}
+                            <span class="badge bg-success">Đã giao</span>
+                            {% elif o.status == 'cancelled' %}
+                            <span class="badge bg-danger">Đã hủy</span>
+                            {% else %}
+                            <span class="badge bg-secondary">{{ o.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <a href="{{ url_for('admin_order_detail', order_id=o.order_id) }}"
+                                class="btn btn-sm btn-outline-primary" title="Xem chi tiết">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td colspan="9" class="text-center py-5 text-muted">
+                            <i class="fas fa-receipt fa-3x mb-3"></i><br>
+                            Không tìm thấy đơn hàng nào phù hợp.
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Phân trang -->
+{% if total_pages > 1 %}
+<nav class="mt-4">
+    <ul class="pagination justify-content-center">
+        <li class="page-item {{ 'disabled' if page_num <= 1 else '' }}">
+            <a class="page-link"
+                href="{{ url_for('admin_order_list', q=keyword, status=status, date_from=date_from, date_to=date_to, sort=sort, page=page_num-1) }}">
+                &laquo;
+            </a>
+        </li>
+        {% for p in range(1, total_pages + 1) %}
+        <li class="page-item {{ 'active' if p == page_num else '' }}">
+            <a class="page-link"
+                href="{{ url_for('admin_order_list', q=keyword, status=status, date_from=date_from, date_to=date_to, sort=sort, page=p) }}">{{ p }}</a>
+        </li>
+        {% endfor %}
+        <li class="page-item {{ 'disabled' if page_num >= total_pages else '' }}">
+            <a class="page-link"
+                href="{{ url_for('admin_order_list', q=keyword, status=status, date_from=date_from, date_to=date_to, sort=sort, page=page_num+1) }}">
+                &raquo;
+            </a>
+        </li>
+    </ul>
+</nav>
+{% endif %}
+
+{% elif page == 'customers' %}
+
+<div class="container-fluid px-4 py-3">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="mb-0 text-primary">
+            <i class="fas fa-users me-2"></i> Quản Lý Khách Hàng
+        </h3>
+        <span class="text-muted">Tổng: <strong>{{ customers|length }}</strong> khách hàng</span>
+    </div>
+
+    <!-- Search -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body py-3">
+            <div class="input-group">
+                <span class="input-group-text bg-white border-end-0"><i class="fas fa-search text-muted"></i></span>
+                <input type="text" id="customerSearch" class="form-control border-start-0"
+                    placeholder="Tìm theo tên, email, số điện thoại..." autocomplete="off">
+            </div>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            {% if customers %}
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" id="customersTable">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="text-center" style="width:60px;">STT</th>
+                            <th style="width:80px;">Avatar</th>
+                            <th>Tên Khách Hàng</th>
+                            <th>Email</th>
+                            <th>SĐT</th>
+                            <th>Địa Chỉ</th>
+                            <th class="text-center sortable" data-sort="order_count">
+                                Số Đơn <i class="fas fa-sort ms-1 text-muted"></i>
+                            </th>
+                            <th class="text-end sortable" data-sort="total_spent">
+                                Tổng Chi <i class="fas fa-sort ms-1 text-muted"></i>
+                            </th>
+                            <th class="text-center" style="width:140px;">Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customersTableBody">
+                        {% for c in customers %}
+                        <tr class="customer-row">
+                            <td class="text-center text-muted small">{{ loop.index }}</td>
+                            <td>
+                                {% if c.avatar %}
+                                <img src="{{ url_for('static', filename='uploads/' ~ c.avatar) }}"
+                                    class="rounded-circle shadow-sm" width="48" height="48" alt="{{ c.name }}"
+                                    onerror="this.src='{{ url_for('static', filename='img/default-avatar.png') }}'">
+                                {% else %}
+                                <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center text-white fw-bold"
+                                    style="width:48px;height:48px;font-size:18px;">
+                                    {{ c.name[:2].upper() }}
+                                </div>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <strong>{{ c.name }}</strong>
+                                {% if c.order_count > 0 %}<br>
+                                <small class="text-success"><i class="fas fa-star"></i> Khách quen</small>
+                                {% endif %}
+                            </td>
+                            <td><a href="mailto:{{ c.email }}" class="text-decoration-none">{{ c.email }}</a></td>
+                            <td>{{ c.phone }}</td>
+                            <td>
+                                {% if c.address != 'Chưa cập nhật' %}
+                                <span title="{{ c.address }}">{{ c.address[:30] }}{% if c.address|length > 30 %}...{%
+                                    endif %}</span>
+                                {% else %}
+                                <span class="text-muted fst-italic">Chưa cập nhật</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                <span class="badge bg-info fs-6 px-3 py-2">{{ c.order_count }}</span>
+                            </td>
+                            <td class="text-end fw-bold text-danger">{{ format_currency(c.total_spent) }}</td>
+                            <td class="text-center">
+                                <a href="{{ url_for('admin_view_customer', customer_id=c.id) }}"
+                                    class="btn btn-sm btn-outline-primary me-1" title="Xem chi tiết">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{{ url_for('admin_edit_customer', customer_id=c.id) }}"
+                                    class="btn btn-sm btn-outline-warning me-1" title="Sửa">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button type="button" class="btn btn-sm btn-outline-danger" title="Xóa"
+                                    data-bs-toggle="modal" data-bs-target="#deleteModal{{ c.id }}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+
+                                <!-- Modal xác nhận xóa -->
+                                <div class="modal fade" id="deleteModal{{ c.id }}" tabindex="-1">
+                                    <div class="modal-dialog modal-sm">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-danger text-white">
+                                                <h5 class="modal-title">Xác nhận xóa</h5>
+                                                <button type="button" class="btn-close btn-close-white"
+                                                    data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body text-center">
+                                                <p>Xóa khách <strong>{{ c.name }}</strong>?<br>
+                                                    <small class="text-danger">Tất cả đơn hàng sẽ bị xóa!</small>
+                                                </p>
+                                            </div>
+                                            <div class="modal-footer justify-content-center">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Hủy</button>
+                                                <form method="POST"
+                                                    action="{{ url_for('admin_delete_customer', customer_id=c.id) }}"
+                                                    style="display:inline">
+                                                    <button type="submit" class="btn btn-danger">Xóa</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                <p class="text-muted">Chưa có khách hàng nào.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('customerSearch');
+        const tableBody = document.getElementById('customersTableBody');
+        const rows = Array.from(tableBody.querySelectorAll('.customer-row'));
+
+        searchInput.addEventListener('input', function () {
+            const query = this.value.toLowerCase().trim();
+            rows.forEach(row => {
+                const name = row.cells[2].textContent.toLowerCase();
+                const email = row.cells[3].textContent.toLowerCase();
+                const phone = row.cells[4].textContent.toLowerCase();
+                row.style.display = (name.includes(query) || email.includes(query) || phone.includes(query)) ? '' : 'none';
+            });
+        });
+
+        document.querySelectorAll('.sortable').forEach(header => {
+            header.style.cursor = 'pointer';
+            header.addEventListener('click', function () {
+                const sortKey = this.getAttribute('data-sort');
+                const isNumeric = sortKey === 'total_spent' || sortKey === 'order_count';
+                let ascending = !this.classList.contains('desc');
+                this.classList.toggle('desc', !ascending);
+
+                rows.sort((a, b) => {
+                    let valA = a.cells[sortKey === 'order_count' ? 6 : 7].textContent.trim();
+                    let valB = b.cells[sortKey === 'order_count' ? 6 : 7].textContent.trim();
+                    if (isNumeric) {
+                        valA = parseFloat(valA.replace(/[^0-9.-]+/g, '')) || 0;
+                        valB = parseFloat(valB.replace(/[^0-9.-]+/g, '')) || 0;
+                    }
+                    return (valA > valB ? 1 : -1) * (ascending ? 1 : -1);
+                });
+
+                rows.forEach(row => tableBody.appendChild(row));
+            });
+        });
+    });
+</script>
+
+<!-- Client-side Search & Sort Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('customerSearch');
+        const tableBody = document.getElementById('customersTableBody');
+        const rows = Array.from(tableBody.querySelectorAll('.customer-row'));
+
+        // Search
+        searchInput.addEventListener('input', function () {
+            const query = this.value.toLowerCase().trim();
+            rows.forEach(row => {
+                const name = row.cells[2].textContent.toLowerCase();
+                const email = row.cells[3].textContent.toLowerCase();
+                const phone = row.cells[4].textContent.toLowerCase();
+
+                row.style.display = (name.includes(query) || email.includes(query) || phone.includes(query)) ? '' : 'none';
+            });
+        });
+
+        // Sort
+        document.querySelectorAll('.sortable').forEach(header => {
+            header.style.cursor = 'pointer';
+            header.addEventListener('click', function () {
+                const sortKey = this.getAttribute('data-sort');
+                const isNumeric = sortKey === 'total_spent' || sortKey === 'order_count';
+                let ascending = !this.classList.contains('desc');
+                this.classList.toggle('desc', !ascending);
+
+                rows.sort((a, b) => {
+                    let valA = a.cells[sortKey === 'order_count' ? 6 : 7].textContent.trim();
+                    let valB = b.cells[sortKey === 'order_count' ? 6 : 7].textContent.trim();
+
+                    if (isNumeric) {
+                        valA = parseFloat(valA.replace(/[^0-9.-]+/g, '')) || 0;
+                        valB = parseFloat(valB.replace(/[^0-9.-]+/g, '')) || 0;
+                    }
+
+                    return (valA > valB ? 1 : -1) * (ascending ? 1 : -1);
+                });
+
+                rows.forEach(row => tableBody.appendChild(row));
+            });
+        });
+    });
+</script>
+
+{% elif page == 'reports' %}
+
+<div class="row mb-4">
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-chart-line me-2 text-primary"></i>
+                    Doanh Thu 7 Ngày Gần Nhất
+                </h5>
+                <canvas id="revenueChart" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-chart-pie me-2 text-info"></i>
+                    Trạng Thái Đơn Hàng
+                </h5>
+                <canvas id="orderStatusChart" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Top Products & Customers Tables -->
+<div class="row">
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title mb-4">
+                    <i class="fas fa-trophy me-2 text-warning"></i>
+                    Top 5 Sản Phẩm Bán Chạy
+                </h5>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Sản Phẩm</th>
+                                <th class="text-center">SL Bán</th>
+                                <th class="text-end">Doanh Thu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in top_products %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td><strong>{{ p.name }}</strong></td>
+                                <td class="text-center">{{ p.quantity }}</td>
+                                <td class="text-end text-danger fw-bold">{{ format_currency(p.revenue) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title mb-4">
+                    <i class="fas fa-crown me-2 text-success"></i>
+                    Top 5 Khách Hàng Thân Thiết
+                </h5>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Khách Hàng</th>
+                                <th class="text-center">Số Đơn</th>
+                                <th class="text-end">Tổng Chi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cust in top_customers %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td><strong>{{ cust.name }}</strong></td>
+                                <td class="text-center">{{ cust.orders }}</td>
+                                <td class="text-end text-danger fw-bold">{{ format_currency(cust.total) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+
+<!-- ================== DEFAULT DASHBOARD ================== -->
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title mb-4">
+            <i class="fas fa-shield-alt me-2 text-danger"></i>
+            Danh Sách Tài Khoản Quản Trị
+        </h5>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên Đăng Nhập</th>
+                        <th>Email</th>
+                        <th>Vai Trò</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in users %}
+                    <tr>
+                        <td>{{ u.id }}</td>
+                        <td><strong>{{ u.username }}</strong></td>
+                        <td>{{ u.email }}</td>
+                        <td>
+                            <span class="badge bg-{{ 'danger' if u.role == 'admin' else 'primary' }}">
+                                {{ u.role|capitalize }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+{% if page == 'reports' %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Revenue Line Chart
+    new Chart(document.getElementById('revenueChart'), {
+        type: 'line',
+        data: {
+            labels: {{ revenue_labels | tojson }},
+        datasets: [{
+            label: 'Doanh Thu (₫)',
+            data: {{ revenue_data | tojson }},
+        borderColor: '#0d6efd',
+        backgroundColor: 'rgba(13, 110, 253, 0.1)',
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: '#0d6efd',
+        pointRadius: 5
+            }]
+        },
+        options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+            y: { beginAtZero: true }
+        }
+    }
+    });
+
+    // Order Status Doughnut Chart
+    new Chart(document.getElementById('orderStatusChart'), {
+        type: 'doughnut',
+        data: {
+            labels: {{ status_labels | tojson }},
+        datasets: [{
+            data: {{ status_counts | tojson }},
+        backgroundColor: {{ status_colors | tojson }},
+        borderWidth: 2
+            }]
+        },
+        options: {
+        responsive: true,
+        plugins: {
+            legend: { position: 'bottom' }
+        }
+    }
+    });
+</script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "Admin.html" %}
+{% block title %}Sản phẩm: {{ category_name }}{% endblock %}
+
+{% block content %}
+<div class="container p-4">
+    <h3 class="mb-4">{{ category_name }}</h3>
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                <img src="{{ url_for('static', filename='uploads/' + product.image) }}" class="card-img-top" alt="{{ product.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">{{ product.description[:60] }}{% if product.description|length > 60 %}...{% endif %}</p>
+                    <p class="card-text"><strong>Giá:</strong> {{ "{:,.0f}".format(product.price) }} VNĐ</p>
+                    {% if product.featured %}
+                        <span class="badge bg-success">Nổi bật</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

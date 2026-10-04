@@ -1,0 +1,91 @@
+{% extends "Admin.html" %}
+
+{% block title %}Chỉnh Sửa Khách Hàng{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-4">
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="row mb-4">
+                <div class="col-12">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Edit Customer Form -->
+    <div class="card">
+        <div class="card-header bg-white">
+            <h5 class="mb-0"><i class="fas fa-user-edit me-2"></i> Chỉnh Sửa Thông Tin Khách Hàng</h5>
+        </div>
+        <div class="card-body">
+            <form action="{{ url_for('customers', customer_id=customer.id) }}" method="POST" id="editCustomerForm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="fullname" class="form-label required">Họ và Tên</label>
+                            <input type="text" class="form-control" id="fullname" name="fullname" value="{{ customer.fullname }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label required">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" value="{{ customer.email }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Số điện thoại</label>
+                            <input type="text" class="form-control" id="phone" name="phone" value="{{ customer.phone }}">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Địa chỉ</label>
+                            <textarea class="form-control" id="address" name="address" rows="3">{{ customer.address }}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="role" class="form-label required">Vai trò</label>
+                            <select class="form-select" id="role" name="role" required>
+                                <option value="customer" {% if customer.role=='customer' %}selected{% endif %}>Khách Hàng</option>
+                                <option value="admin" {% if customer.role=='admin' %}selected{% endif %}>Admin</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-3">
+                    <a href="{{ url_for('customers') }}" class="btn btn-secondary">Hủy</a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i> Lưu Thay Đổi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+<script>
+    // Form Validation
+    document.getElementById('editCustomerForm').addEventListener('submit', function(e) {
+        const fullname = document.getElementById('fullname').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const role = document.getElementById('role').value;
+
+        if (!fullname || !email || !role) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'error',
+                title: 'Thiếu thông tin',
+                text: 'Vui lòng điền đầy đủ các trường bắt buộc (*)'
+            });
+        }
+    });
+</script>
+{% endblock %}
+{% endblock %}

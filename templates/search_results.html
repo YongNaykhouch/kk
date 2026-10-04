@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}Tìm kiếm "{{ query }}" - Cửa Hàng Điện Tử{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4 text-primary fw-bold">
+        <i class="fas fa-search me-2"></i>
+        Kết quả tìm kiếm cho: <strong>"{{ query }}"</strong>
+        <span class="badge bg-secondary fs-6">{{ total_products }} sản phẩm</span>
+    </h2>
+
+    {% if products %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        {% for product in products %}
+        <div class="col">
+            <div class="card shadow-sm border-0 h-100 hover-lift transition">
+                <div class="position-relative overflow-hidden">
+                    <img src="{% if product.image and product.image.startswith('http') %}
+                                {{ product.image }}
+                             {% else %}
+                                {{ url_for('static', filename='uploads/' ~ (product.image or 'default.png')) }}
+                             {% endif %}"
+                         alt="{{ product.name }}" class="card-img-top" style="height: 250px; object-fit: contain; background: #f8f9fa;">
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold">{{ product.name }}</h5>
+                    <p class="text-muted small">{{ product.brand }}</p>
+
+                    <div class="small text-muted mb-3 flex-grow-1">
+                        {% set specs = product | get_specs %}
+                        {% for spec in specs[:4] %}
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <i class="fas {{ spec.icon }} text-primary"></i>
+                            <span>{{ spec.value }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mt-auto">
+                        <h4 class="text-danger fw-bold">{{ product.price | format_currency }}</h4>
+                        <div class="d-flex gap-2 mt-3">
+                            <a href="{{ url_for('add_to_cart', product_id=product.id) }}"
+                               class="btn btn-outline-warning flex-fill">
+                                <i class="fas fa-cart-plus"></i> Thêm giỏ
+                            </a>
+                            <a href="{{ url_for('buy_now', product_id=product.id) }}"
+                                         class="btn btn-warning buy-now-button flex-fill text-white">
+                                <i class="fas fa-bolt"></i> Đặt mua
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if total_pages > 1 %}
+    <nav class="mt-5">
+        <ul class="pagination justify-content-center">
+            <li class="page-item {{ 'disabled' if page <= 1 else '' }}">
+                <a class="page-link" href="{{ url_for('search', q=query, page=page-1) }}">« Trước</a>
+            </li>
+            {% for p in range(1, total_pages + 1) %}
+            <li class="page-item {{ 'active' if p == page else '' }}">
+                <a class="page-link" href="{{ url_for('search', q=query, page=p) }}">{{ p }}</a>
+            </li>
+            {% endfor %}
+            <li class="page-item {{ 'disabled' if page >= total_pages else '' }}">
+                <a class="page-link" href="{{ url_for('search', q=query, page=page+1) }}">Sau »</a>
+            </li>
+        </ul>
+    </nav>
+    {% endif %}
+
+    {% else %}
+    <div class="text-center py-5">
+        <i class="fas fa-search fa-5x text-muted mb-4"></i>
+        <h4 class="text-muted">Không tìm thấy sản phẩm nào phù hợp với "{{ query }}"</h4>
+        <p class="text-muted">Thử tìm với từ khóa khác nhé!</p>
+        <a href="{{ url_for('index') }}" class="btn btn-primary">Quay lại trang chủ</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hover-lift {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .hover-lift:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+    }
+</style>
+{% endblock %}

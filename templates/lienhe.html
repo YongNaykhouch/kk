@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liên hệ - Cửa Hàng Điện Tử</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
+<style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --text-color: #1f2937;
+            --bg-light: #f9fafb;
+            --border-color: #e5e7eb;
+        }
+
+        body {
+            font-family: 'Merriweather', serif;
+            color: var(--text-color);
+            background-color: var(--bg-light);
+            line-height: 1.6;
+        }
+
+        .alert-success {
+            background-color: #d1fae5;
+            border-color: #10b981;
+            color: #065f46;
+            padding: 12px 20px;
+            margin: 15px auto;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            max-width: 600px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .alert-error {
+            background-color: #fee2e2;
+            border-color: #ef4444;
+            color: #991b1b;
+            padding: 12px 20px;
+            margin: 15px auto;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            max-width: 600px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .lienhe-header {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .lienhe-header::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: var(--primary-color);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        .lienhe-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .info-left, .info-right, .guithongtin, .thongtinnhom {
+            flex: 1;
+            min-width: 320px;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .info-left:hover, .info-right:hover, .guithongtin:hover, .thongtinnhom:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+        }
+
+        .info-left h2, .guithongtin .title, .thongtinnhom .title {
+            font-size: 1.25rem;
+            color: #111827 !important;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .info-left p {
+            margin: 12px 0;
+            color: #4b5563;
+        }
+
+        .info-right iframe {
+            border-radius: 8px;
+            border: none;
+            width: 100%;
+        }
+
+        /* --- Tinh chỉnh phần form liên hệ --- */
+        .guithongtin table {
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            border-collapse: separate;
+            border-spacing: 0 10px; /* Tạo khoảng cách giữa các dòng trong form */
+        }
+
+        .guithongtin td {
+            padding: 8px 10px;
+            vertical-align: middle;
+            color: #374151;
+            font-weight: 600;
+        }
+
+        /* Cố định chiều rộng cột nhãn bên trái để các hàng thẳng tắp */
+        .guithongtin tr td:first-child {
+            width: 32%;
+            white-space: nowrap;
+        }
+
+        .guithongtin input, .guithongtin textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: inherit;
+            font-size: 0.95rem;
+            background-color: #fdfdfd;
+        }
+
+        .guithongtin input:focus, .guithongtin textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+            background-color: #ffffff;
+        }
+
+        .guithongtin button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background-color 0.2s, transform 0.1s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .guithongtin button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .guithongtin button:active {
+            transform: scale(0.98);
+        }
+
+        /* --- Bảng thông tin thành viên --- */
+        .thongtinnhom table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .thongtinnhom th, .thongtinnhom td {
+            padding: 12px 15px;
+            text-align: center;
+        }
+
+        .thongtinnhom th {
+            background-color: #f3f4f6;
+            color: #1f2937;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .thongtinnhom td {
+            border-bottom: 1px solid var(--border-color);
+            color: #4b5563;
+        }
+
+        .thongtinnhom tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .thongtinnhom tbody tr:hover {
+            background-color: #f9fafb;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-navbar">
+        <p>CHÀO MỪNG ĐẾN CỬA HÀNG ĐIỆN TỬ</p>
+        <div class="icons">
+            {% if session.username %}
+            <a href="{{ url_for('admin_dashboard') }}">
+                <i class="fas fa-user"></i> Hồ sơ
+            </a>
+            <a href="{{ url_for('logout') }}">
+                <i class="fas fa-sign-out-alt"></i> Đăng xuất
+            </a>
+            {% else %}
+            <a href="{{ url_for('login') }}">
+                <img src="{{ url_for('static', filename='images/register.png') }}" alt="" width="18px">Đăng ký
+            </a>
+            <a href="{{ url_for('register') }}">
+                <img src="{{ url_for('static', filename='images/register.png') }}" alt="" width="18px"> Đăng nhập
+            </a>
+            {% endif %}
+            <a href="#" data-bs-toggle="modal" data-bs-target="#cartModal" class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </a>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg" id="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('index') }}" id="logo">
+                <span id="span1"></span>Cửa hàng <span>Điện Tử</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span><img src="{{ url_for('static', filename='images/menu.png') }}" alt="" width="30px"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ url_for('index') }}">Trang chủ</a>
+                    </li>
+                
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('lienhe') }}">Liên hệ</a>
+                    </li>
+                </ul>
+                <form class="d-flex" id="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Tìm</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <section class="container my-5">
+        <h1 class="lienhe-header">Liên hệ</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'success' if category == 'success' else 'error' }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <div class="lienhe-info">
+            <div class="info-left">
+                <h2 style="color: gray; margin-bottom: 1rem;">CÔNG TY YN CEO GLOBAL GROUP</h2>
+                <p><strong>Địa chỉ:</strong> 23 Tạ Quang Bửu, Phường Bách Khoa, Quận Hai Bà Trưng, Hà Nội</p>
+                <p><strong>Telephone:</strong> 0917873816</p>
+                <p><strong>Mã số thuế:</strong> 01 02 03 04 05</p>
+                <p><strong>Tài khoản ngân hàng:</strong></p>
+                <p><strong>Số TK:</strong> 060008086888</p>
+                <p><strong>Tại Ngân hàng:</strong> Agribank Chi nhánh HÀ NỘI</p>
+                <p style="margin-top: 2rem;">
+                    <strong>Quý khách có thể gửi liên hệ tới chúng tôi bằng cách hoàn tất biểu mẫu dưới đây. Chúng tôi
+                        sẽ trả lời thư của quý khách, xin vui lòng khai báo đầy đủ. Hân hạnh phục vụ và chân thành
+                        cảm ơn sự quan tâm, đóng góp ý kiến đến Smartphone Store.</strong>
+                </p>
+            </div>
+            <div class="info-right">
+                <iframe width="100%" height="450"
+                    src="https://maps.google.com/maps?width=100%&amp;height=450&amp;hl=en&amp;coord=10.759660000323064,106.68192160315813&amp;q=273%20An%20D%C6%B0%C6%A1ng%20V%C6%B0%C6%A1ng%20Ph%C6%B0%E1%BB%9Dng%203%20Qu%E1%BA%ADn%205%20H%E1%BB%93%20Ch%C3%AD%20Minh%20700000%2C%20Vi%E1%BB%87t%20Nam+(My%20Business%20Name)&amp;ie=UTF8&amp;t=&amp;z=16&amp;iwloc=B&amp;output=embed"
+                    frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+            </div>
+        </div>
+        <div class="lienhe-info">
+            <div class="guithongtin">
+                <p class="title" style="font-size: 22px; color: gray; margin-bottom: 0.5rem;">Gửi thông tin liên lạc cho chúng tôi:</p>
+                <hr>
+                <form name="formlh" method="POST" action="{{ url_for('lienhe') }}">
+                    <table cellspacing="10">
+                        <tbody>
+                            <tr>
+                                <td>Họ và tên</td>
+                                <td><input type="text" name="ht" size="40" maxlength="40" placeholder="Họ tên" autocomplete="off" required></td>
+                            </tr>
+                            <tr>
+                                <td>Điện thoại liên hệ</td>
+                                <td><input type="text" name="sdt" size="40" maxlength="11" minlength="10" placeholder="Điện thoại" required></td>
+                            </tr>
+                            <tr>
+                                <td>Địa chỉ Email</td>
+                                <td><input type="email" name="em" size="40" placeholder="Email" autocomplete="off" required></td>
+                            </tr>
+                            <tr>
+                                <td>Tiêu đề</td>
+                                <td><input type="text" name="tde" size="40" maxlength="100" placeholder="Tiêu đề" required></td>
+                            </tr>
+                            <tr>
+                                <td>Nội dung</td>
+                                <td><textarea name="nd" rows="5" cols="44" maxlength="500" placeholder="Nội dung liên hệ" required></textarea></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><button type="submit">Gửi thông tin liên hệ</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div class="thongtinnhom">
+                <p class="title" style="font-size: 22px; color: gray; margin-bottom: 0.5rem;">Thông tin thành viên nhóm:</p>
+                <hr>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Họ tên</th>
+                            <th>MSSV</th>
+                            <th>Giới tính</th>
+                            <th>Lớp</th>
+                            <th>Tỉ lệ công việc</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>YONG NAYKHOUCH</td>
+                            <td>11248514</td>
+                            <td>NỮ</td>
+                            <td>CNTT 66B</td>
+                            <td>100%</td>
+                        </tr>
+                        <tr>
+                            <td>DƯƠNG</td>
+                            <td>11111111</td>
+                            <td>NỮ</td>
+                            <td>CNTT 66B</td>
+                            <td>100%</td>
+                        </tr>
+                        <tr>
+                            <td>Yến </td>
+                            <td>22222222</td>
+                            <td>NỮ</td>
+                            <td>CNTT 66C</td>
+                            <td>100%</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <footer id="footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 footer-contact">
+                        <h3>Cửa hàng điện tử</h3>
+                        <p>
+                            Viet Nam <br>
+                            Lao <br>
+                            Cambodia <br>
+                        </p>
+                        <strong>Phone:</strong> 0917873816 <br>
+                        <strong>Email:</strong> yongnaykhoouch1@gmail.com <br>
+                    </div>
+                    <div class="col-lg-3 col-md-6 footer-links">
+                        <h4>Usefull Links</h4>
+                        <ul>
+                            <li><a href="{{ url_for('index') }}">Trang chủ</a></li>
+                            <li><a href="{{ url_for('index') }}">Về chúng tôi</a></li>
+                            <li><a href="#">Dịch vụ</a></li>
+                            <li><a href="#">Điều khoản sử dụng</a></li>
+                            <li><a href="#">Chính sách bảo mật</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-6 footer-links">
+                        <h4>Dịch vụ</h4>
+                        <ul>
+                            <li><a href="#">Tư vấn mua hàng</a></li>
+                            <li><a href="#">Bảo hành điện tử</a></li>
+                            <li><a href="#">Hỗ trợ kỹ thuật</a></li>
+                            <li><a href="#">Theo dõi đơn hàng</a></li>
+                            <li><a href="#">Trung tâm bảo hành</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-6 footer-links">
+                        <h4>Mạng xã hội</h4>
+                        <p>Theo dõi chúng tôi tại:</p>
+                        <div class="socail-links mt-3">
+                            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#"><i class="fa-brands fa-skype"></i></a>
+                            <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="container py-4">
+            <div class="copyright">
+                &copy; Copyright <strong><span>Cửa hàng điện tử</span></strong>. All Rights Reserved
+            </div>
+            <div class="credits">
+                Designed by <a href="#">YONG NAYKHOUCH</a>
+            </div>
+        </div>
+    </footer>
+
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cartModalLabel">Giỏ Hàng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="w-100">
+                        <thead>
+                            <tr>
+                                <th>Tên Sản Phẩm</th>
+                                <th>Số Lượng</th>
+                                <th>Đơn Giá</th>
+                                <th>Tổng</th>
+                                <th>Hành Động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cartItems">
+                            <!-- Cart items will be dynamically added here -->
+                        </tbody>
+                    </table>
+                    <div class="total" id="cartTotal">Tổng Cộng: 0 ₫</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary fw-bold"
+                        onclick="window.location.href='{{ url_for('clear_cart') }}'">Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="#" class="arrow"><i><img src="{{ url_for('static', filename='images/arrow.png') }}" alt=""></i></a>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script>
+        // Pass customer_id from session to JavaScript
+        const customerId = {{ session.customer_id | tojson if session.customer_id is defined and session.customer_id is not none else 0 | tojson }};
+        // Cart functionality (unchanged from index.html)
+        function addToCart(productId, name, price) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const existingItem = cart.find(item => item.product_id === productId);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    product_id: productId,
+                    name: name,
+                    price: price,
+                    quantity: 1
+                });
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+            alert('Đã thêm sản phẩm vào giỏ hàng!');
+        }
+        function updateCartDisplay() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartItems = document.getElementById('cartItems');
+            const cartCount = document.getElementById('cartCount');
+            const cartTotal = document.getElementById('cartTotal');
+            let total = 0;
+            cartItems.innerHTML = '';
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                cartItems.innerHTML += `
+                    <tr>
+                        <td>${item.name}</td>
+                        <td>${item.quantity}</td>
+                        <td>${item.price.toLocaleString()} ₫</td>
+                        <td>${itemTotal.toLocaleString()} ₫</td>
+                        <td>
+                            <button onclick="removeFromCart(${index})" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            cartCount.textContent = cart.length;
+            cartTotal.textContent = `Tổng Cộng: ${total.toLocaleString()} ₫`;
+        }
+        function removeFromCart(index) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+        }
+        function checkoutCart() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (cart.length === 0) {
+                alert('Giỏ hàng trống!');
+                return;
+            }
+            const items = cart.map(item => ({
+                product_id: item.product_id,
+                quantity: item.quantity
+            }));
+            fetch('/place_order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    customer_id: customerId,
+                    items: items
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Đặt hàng thành công! Mã đơn hàng: ' + data.order_id);
+                        localStorage.removeItem('cart');
+                        updateCartDisplay();
+                        $('#cartModal').modal('hide');
+                    } else {
+                        alert('Lỗi khi đặt hàng: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    alert('Lỗi: ' + error);
+                });
+        }
+        document.addEventListener('DOMContentLoaded', updateCartDisplay);
+    </script>
+</body>
+</html>

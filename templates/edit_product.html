@@ -1,0 +1,96 @@
+{% extends "Admin.html" %}
+
+{% block title %}Chỉnh Sửa Sản Phẩm{% endblock %}
+{% block page_title %}Chỉnh Sửa Sản Phẩm{% endblock %}
+{% block page_subtitle %}Cập nhật thông tin sản phẩm{% endblock %}
+
+{% block content %}
+<div class="fade-in">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-edit me-2"></i>
+                        Chỉnh sửa: <strong>{{ product.name }}</strong>
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+
+                    <form method="POST" enctype="multipart/form-data">
+                        <!-- CSRF protection if you use Flask-WTF later -->
+
+                        <div class="row g-4">
+
+                            <!-- Tên sản phẩm -->
+                            <div class="col-md-6">
+                                <label class="form-label required">Tên sản phẩm</label>
+                                <input type="text" name="name" class="form-control" value="{{ product.name }}" required>
+                            </div>
+
+                            <!-- Danh mục -->
+                            <div class="col-md-6">
+                                <label class="form-label required">Danh mục</label>
+                                <input type="text" name="category" class="form-control" value="{{ product.category }}"
+                                    placeholder="Ví dụ: Điện thoại, Tai nghe, Đồng hồ" required>
+                            </div>
+
+                            <!-- Thương hiệu -->
+                            <div class="col-md-6">
+                                <label class="form-label required">Thương hiệu</label>
+                                <input type="text" name="brand" class="form-control" value="{{ product.brand }}"
+                                    placeholder="Samsung, Apple, Daikin..." required>
+                            </div>
+
+                            <!-- Giá -->
+                            <div class="col-md-6">
+                                <label class="form-label required">Giá (₫)</label>
+                                <input type="number" name="price" class="form-control" value="{{ product.price }}"
+                                    min="0" step="1000" required>
+                            </div>
+
+                            <!-- Hình ảnh hiện tại -->
+                            <div class="col-12">
+                                <label class="form-label">Hình ảnh hiện tại</label>
+                                <div class="mb-3">
+                                    <!-- Image preview -->
+                                    {% if product['image'] %}
+                                    <img src="{{ url_for('static', filename='uploads/' ~ product['image']) }}"
+                                        alt="{{ product['name'] }}" class="img-thumbnail"
+                                        style="max-height: 200px; border-radius: 8px;">
+                                    {% else %}
+                                    <div class="border border-dashed rounded p-5 text-center text-muted">
+                                        <i class="fas fa-image fa-3x mb-3"></i>
+                                        <p>Chưa có hình ảnh</p>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- Upload hình mới -->
+                            <div class="col-12">
+                                <label class="form-label">Thay đổi hình ảnh (để trống nếu không muốn thay)</label>
+                                <input type="file" name="image" class="form-control"
+                                    accept="image/png,image/jpeg,image/gif">
+                                <small class="text-muted">Chấp nhận: PNG, JPG, JPEG, GIF</small>
+                            </div>
+
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="mt-5 text-end">
+                            <a href="{{ url_for('admin_products') }}" class="btn btn-secondary me-2">
+                                <i class="fas fa-arrow-left"></i> Quay lại
+                            </a>
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-save"></i> Cập Nhật Sản Phẩm
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

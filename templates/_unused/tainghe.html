@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tai Nghe Cao Cấp | Audiophile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
+        <div class="container">
+            <a class="navbar-brand fs-3" href="#">
+                <i class="fas fa-headphones"></i> 
+                AUDIOPHILE
+            </a>
+            <div class="d-flex align-items-center">
+                <div class="text-light me-4">
+                    <i class="fas fa-shopping-cart fs-5"></i>
+                    <span class="badge bg-danger">2</span>
+                </div>
+                <button class="btn btn-outline-light">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow-1 py-5">
+        <div class="container">
+            <h1 class="text-center mb-5 display-3 fw-bold text-primary">TAI NGHE CAO CẤP</h1>
+    
+            <div class="row g-4">
+                <!-- Product 1 -->
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="position-relative">
+                        <img src="{{ url_for('static', filename='images/Sony.png') }}"
+                             class="card-img-top p-3"
+                             alt="Sony WH-1000XM5"
+                             style="height: 220px; object-fit: contain;">
+                        <div class="position-absolute top-0 start-0 m-2">
+                            <span class="badge bg-success product-badge">Bán chạy</span>
+                        </div>
+                    </div>
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div>
+                            <h3 class="card-title mb-2 fw-semibold">Sony WH-1000XM5</h3>
+                            <div class="d-flex gap-2 mb-2 flex-wrap">
+                                <span class="badge bg-primary rounded-pill product-badge">Chống ồn</span>
+                                <span class="badge bg-info rounded-pill product-badge">30h playtime</span>
+                                <span class="badge bg-warning rounded-pill product-badge">Bluetooth 5.2</span>
+                            </div>
+                            <div class="text-warning mb-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="text-muted ms-1">(4.8)</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-danger mb-3 fw-bold">8.990.000₫</h4>
+                             <a href="/order_tainghe">
+                                <button class="btn btn-primary w-100 py-2 rounded">
+                                <i class="fas fa-cart-plus me-2"></i>THÊM GIỎ
+                                </button>
+                             </a>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <!-- Product 2 -->
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                    <div class="card h-100 shadow-sm">
+                        <div class="position-relative">
+                            <img src="{{ url_for('static', filename='images/Bose.png') }}"
+                                 class="card-img-top p-3"
+                                 alt="Bose QuietComfort 45"
+                                 style="height: 220px; object-fit: contain;">
+                            <div class="position-absolute top-0 start-0 m-2">
+                                <span class="badge bg-danger product-badge">Giảm 20%</span>
+                            </div>
+                        </div>
+                        <div class="card-body d-flex flex-column justify-content-between">
+                            
+                                <h3 class="card-title mb-2 fw-semibold">Bose QuietComfort 45</h3>
+                                <div class="d-flex gap-2 mb-2 flex-wrap">
+                                    <span class="badge bg-primary rounded-pill product-badge">ANC</span>
+                                    <span class="badge bg-info rounded-pill product-badge">24h playtime</span>
+                                    <span class="badge bg-success rounded-pill product-badge">Tiện dụng</span>
+                                </div>
+                                <div class="text-warning mb-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <span class="text-muted ms-1">(4.5)</span>
+                                </div>
+                        
+                            <h4 class="text-danger mb-3 fw-bold">6.390.000₫</h4>
+                            <a href="/order_tainghe">
+                                <button class="btn btn-primary w-100 py-2 rounded">
+                                <i class="fas fa-cart-plus me-2"></i>THÊM GIỎ
+                                </button>
+                            </a>
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                    <div class="card h-100 shadow-sm">
+                        <div class="position-relative">
+                            <img src="{{ url_for('static', filename='images/Sennheiser.png') }}"
+                                 class="card-img-top p-3"
+                                 alt="Sennheiser Momentum 4"
+                                 style="height: 220px; object-fit: contain;">
+                            <div class="position-absolute top-0 start-0 m-2">
+                                <span class="badge bg-info product-badge">Mới ra mắt</span>
+                            </div>
+                        </div>
+                        <div class="card-body d-flex flex-column justify-content-between">
+                            <div>
+                                <h3 class="card-title mb-2 fw-semibold">Sennheiser Momentum 4</h3>
+                                <div class="d-flex gap-2 mb-2 flex-wrap">
+                                    <span class="badge bg-primary rounded-pill product-badge">60h playtime</span>
+                                    <span class="badge bg-warning rounded-pill product-badge">Âm thanh chuẩn Hi-Res</span>
+                                    <span class="badge bg-success rounded-pill product-badge">Adaptive ANC</span>
+                                </div>
+                                <div class="text-warning mb-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <span class="text-muted ms-1">(5.0)</span>
+                                </div>
+                            </div>
+                            <div>
+                             <h4 class="text-danger mb-3 fw-bold">9.990.000₫</h4>
+                              <a href="/order_tainghe">
+                                <button class="btn btn-primary w-100 py-2 rounded">
+                                <i class="fas fa-cart-plus me-2"></i>THÊM GIỎ
+                                </button>
+                              </a>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                    <div class="card h-100 shadow-sm">
+                        <div class="position-relative">
+                            <img src="{{ url_for('static', filename='images/AirPods Max.png') }}"
+                                 class="card-img-top p-3"
+                                 alt="Apple AirPods Max"
+                                 style="height: 220px; object-fit: contain;">
+                            <div class="position-absolute top-0 start-0 m-2">
+                                <span class="badge bg-danger product-badge">Hot</span>
+                            </div>
+                        </div>
+                        <div class="card-body d-flex flex-column justify-content-between">
+                            <div>
+                                <h3 class="card-title mb-2 fw-semibold">AirPods Max</h3>
+                                <div class="d-flex gap-2 mb-2 flex-wrap">
+                                    <span class="badge bg-primary rounded-pill product-badge">Active Noise Cancelling</span>
+                                    <span class="badge bg-info rounded-pill product-badge">Tích hợp Siri</span>
+                                    <span class="badge bg-success rounded-pill product-badge">Chuẩn Spatial Audio</span>
+                                </div>
+                                <div class="text-warning mb-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                    <span class="text-muted ms-1">(4.7)</span>
+                                </div>
+                            </div>
+                            <div>
+                            <h4 class="text-danger mb-3 fw-bold">14.990.000₫</h4>
+                              <a href="/order_tainghe">
+                                <button class="btn btn-primary w-100 py-2 rounded">
+                                <i class="fas fa-cart-plus me-2"></i>THÊM GIỎ
+                                </button>
+                              </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+<div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+    <div class="card h-100 shadow-sm">
+        <div class="position-relative">
+            <img src="{{ url_for('static', filename='images/Sony WH-1000XM5.png') }}"
+                 class="card-img-top p-3"
+                 alt="Sony WH-1000XM5"
+                 style="height: 220px; object-fit: contain;">
+            <div class="position-absolute top-0 start-0 m-2">
+                <span class="badge bg-danger product-badge">Bán chạy</span>
+            </div>
+        </div>
+        <div class="card-body d-flex flex-column justify-content-between">
+            <div>
+                <h3 class="card-title mb-2 fw-semibold">Sony WH-1000XM5</h3>
+                <div class="d-flex gap-2 mb-2 flex-wrap">
+                    <span class="badge bg-primary rounded-pill product-badge">30h playtime</span>
+                    <span class="badge bg-warning rounded-pill product-badge">Âm thanh LDAC</span>
+                    <span class="badge bg-success rounded-pill product-badge">Chống ồn AI</span>
+                </div>
+                <div class="text-warning mb-2">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    <span class="text-muted ms-1">(4.8)</span>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-danger mb-3 fw-bold">8.990.000₫</h4>
+                              <a href="/order_tainghe">
+                                <button class="btn btn-primary w-100 py-2 rounded">
+                                <i class="fas fa-cart-plus me-2"></i>THÊM GIỎ
+                                </button>
+                              </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Product 5 -->
+<div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+    <div class="card h-100 shadow-sm">
+        <div class="position-relative">
+            <img src="{{ url_for('static', filename='images/Bose 700.png') }}"
+                 class="card-img-top p-3"
+                 alt="Bose 700"
+                 style="height: 220px; object-fit: contain;">
+            <div class="position-absolute top-0 start-0 m-2">
+                <span class="badge bg-secondary product-badge">Giảm giá</span>
+            </div>
+        </div>
+        <div class="card-body d-flex flex-column justify-content-between">
+            <div>
+                <h3 class="card-title mb-2 fw-semibold">Bose 700</h3>
+                <div class="d-flex gap-2 mb-2 flex-wrap">
+                    <span class="badge bg-primary rounded-pill product-badge">20h playtime</span>
+                    <span class="badge bg-warning rounded-pill product-badge">Chống ồn chủ động</span>
+                    <span class="badge bg-success rounded-pill product-badge">Mic đàm thoại rõ</span>
+                </div>
+                <div class="text-warning mb-2">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span class="text-muted ms-1">(5.0)</span>
+                </div>
+            </div>
+            <div>
+                 <h4 class="text-danger mb-3 fw-bold">7.990.000₫</h4>
+                             <a href="/order_tainghe">
+                                <button class="btn btn-primary w-100 py-2 rounded">
+                                <i class="fas fa-cart-plus me-2"></i>THÊM GIỎ
+                                </button>
+                             </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Product 6 -->
+<div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+    <div class="card h-100 shadow-sm">
+        <div class="position-relative">
+            <img src="{{ url_for('static', filename='images/Apple AirPods Max.png') }}"
+                 class="card-img-top p-3"
+                 alt="Apple AirPods Max"
+                 style="height: 220px; object-fit: contain;">
+            <div class="position-absolute top-0 start-0 m-2">
+                <span class="badge bg-success product-badge">Hàng cao cấp</span>
+            </div>
+        </div>
+        <div class="card-body d-flex flex-column justify-content-between">
+            <div>
+                <h3 class="card-title mb-2 fw-semibold">Apple AirPods Max</h3>
+                <div class="d-flex gap-2 mb-2 flex-wrap">
+                    <span class="badge bg-primary rounded-pill product-badge">20h playtime</span>
+                    <span class="badge bg-warning rounded-pill product-badge">Spatial Audio</span>
+                    <span class="badge bg-success rounded-pill product-badge">Chip H1</span>
+                </div>
+                <div class="text-warning mb-2">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    <span class="text-muted ms-1">(4.7)</span>
+                </div>
+            </div>
+            <div>
+                 <h4 class="text-danger mb-3 fw-bold">13.990.000₫</h4>
+                              <a href="/order_tainghe">
+                                <button class="btn btn-primary w-100 py-2 rounded">
+                                <i class="fas fa-cart-plus me-2"></i>THÊM GIỎ
+                                </button>
+                              </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Product 7 -->
+<div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+    <div class="card h-100 shadow-sm">
+        <div class="position-relative">
+            <img src="{{ url_for('static', filename='images/JBL.png') }}"
+                 class="card-img-top p-3"
+                 alt="JBL Tour One M2"
+                 style="height: 220px; object-fit: contain;">
+            <div class="position-absolute top-0 start-0 m-2">
+                <span class="badge bg-primary product-badge">Best Seller</span>
+            </div>
+        </div>
+        <div class="card-body d-flex flex-column justify-content-between">
+            <div>
+                <h3 class="card-title mb-2 fw-semibold">JBL Tour One M2</h3>
+                <div class="d-flex gap-2 mb-2 flex-wrap">
+                    <span class="badge bg-primary rounded-pill product-badge">50h playtime</span>
+                    <span class="badge bg-warning rounded-pill product-badge">Âm thanh JBL Pro</span>
+                    <span class="badge bg-success rounded-pill product-badge">Chống ồn True Adaptive</span>
+                </div>
+                <div class="text-warning mb-2">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    <span class="text-muted ms-1">(4.6)</span>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-danger mb-3 fw-bold">6.990.000₫</h4>
+                              <a href="/order_tainghe">
+                                <button class="btn btn-primary w-100 py-2 rounded">
+                                <i class="fas fa-cart-plus me-2"></i>THÊM GIỎ
+                                </button>
+                              </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+                
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4 mt-auto">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5>Chính sách</h5>
+                    <ul class="list-unstyled">
+                        <li>Bảo hành chính hãng</li>
+                        <li>Đổi trả 14 ngày</li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Liên hệ</h5>
+                    <p>số điện thoại: 0835385003 <br>Email: ounpunleu7975@gmail.com </p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Theo dõi chúng tôi</h5>
+                    <div class="social-icons">
+                        <a href="#" class="text-light mx-2"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-light mx-2"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-light mx-2"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+            <p class="mt-3 mb-0">&copy; 2025 Audiophile - Tai nghe cao cấp </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+   
+</body>
+</html>

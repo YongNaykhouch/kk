@@ -1,0 +1,65 @@
+<!-- Product 2 -->
+<div>
+    <div class="container">
+        <h1>Sản phẩm tương tự</h1>
+        <div class="products-grid">
+            <div class="product-card">
+                {% for product in product_list %}
+                <div class="hot-deal-badge">HOT DEAL</div>
+                <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=400" alt="Laptop HP"
+                    class="product-image">
+                <h3 class="product-title">Laptop gaming HP VICTUS 15-fa2731TX B85LNPA</h3>
+                <div class="specs">
+                    <div class="spec-item">🔧 i5-13420H</div>
+                    <div class="spec-item">📺 144 Hz</div>
+                    <div class="spec-item">💻 15.6 inch FHD</div>
+                    <div class="spec-item">🎮 16 GB</div>
+                    <div class="spec-item">💾 512 GB</div>
+                    <div class="spec-item">🎨 RTX 3050</div>
+                </div>
+                <div class="price-section">
+                    <div class="old-price">
+                        <span class="old-price-value">{{ product.price | format_currency }}</span>
+                        <span class="discount-badge">-11%</span>
+                    </div>
+                    <div class="current-price">21.790.000đ</div>
+                    <div class="savings">Giảm 2.800.000đ</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="product-card">
+    {% for product in product_list %}
+    <div class="col">
+        <div class="hot-deal-badge">HOT DEAL</div>
+        <img src="{% if product.image and product.image.startswith('http') %}
+                        {{ product.image }}
+                    {% else %}
+                        {{ url_for('static', filename='uploads/' ~ (product.image or 'default.png')) }}
+                    {% endif %}" alt="{{ product.name }}" class="card-img-top rounded-top"
+            style="height: 200px; object-fit: contain; background-color: #f8f9fa;">
+        <h3 class="product-title">{{ product.name }}</h3>
+        <div class="specs">
+            <div class="spec-item">🔧 i5-13420H</div>
+            <div class="spec-item">📺 144 Hz</div>
+            <div class="spec-item">💻 15.6 inch FHD</div>
+            <div class="spec-item">🎮 16 GB</div>
+            <div class="spec-item">💾 512 GB</div>
+            <div class="spec-item">🎨 RTX 3050</div>
+            <div class="star my-2">
+                <i class="fa-solid fa-star text-warning"></i>
+                <i class="fa-solid fa-star text-warning"></i>
+                <i class="fa-solid fa-star text-warning"></i>
+                <i class="fa-solid fa-star text-warning"></i>
+                <i class="fa-solid fa-star text-warning"></i>
+            </div>
+            <h4 class="text-danger fw-bold mb-3">{{ product.price | format_currency }}</h4>
+        </div>
+
+    </div>
+    {% endfor %}
+</div>

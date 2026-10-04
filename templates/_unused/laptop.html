@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laptop Cao Cấp | TechZone</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
+        <div class="container">
+            <a class="navbar-brand fs-3" href="#">
+                <i class="fas fa-laptop"></i> 
+                TECHZONE
+            </a>
+            <div class="d-flex align-items-center">
+                <div class="text-light me-4">
+                    <i class="fas fa-shopping-cart fs-5"></i>
+                    <span class="badge bg-danger">2</span>
+                </div>
+                <button class="btn btn-outline-light">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow-1 py-5">
+        <div class="container">
+            <h1 class="text-center mb-5 display-3 fw-bold text-primary">LAPTOP CAO CẤP</h1>
+    
+            <div class="row g-4">
+                <!-- Product 1 -->
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                    <div class="card h-100 shadow-sm">
+                        <div class="position-relative">
+                            <img src="{{ url_for('static', filename='images/Dell .png') }}"
+                                 class="card-img-top p-3"
+                                 alt="Dell XPS 15"
+                                 style="height: 220px; object-fit: contain;">
+                            <div class="position-absolute top-0 start-0 m-2">
+                                <span class="badge bg-success">Mạnh nhất</span>
+                            </div>
+                        </div>
+                        <div class="card-body d-flex flex-column justify-content-between">
+                            <div>
+                                <h3 class="card-title mb-2 fw-semibold">Dell XPS 15 9520</h3>
+                                <div class="d-flex gap-2 mb-2 flex-wrap">
+                                    <span class="badge bg-primary rounded-pill spec-badge">i7-12700H</span>
+                                    <span class="badge bg-info rounded-pill spec-badge">32GB RAM</span>
+                                    <span class="badge bg-warning rounded-pill spec-badge">1TB SSD</span>
+                                </div>
+                                <div class="text-warning mb-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                    <span class="text-muted ms-1">(4.7)</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-danger mb-3 fw-bold">42.990.000₫</h4>
+                                 <a href="/order_laptop">
+                                    <button class="btn btn-primary w-100 py-2 rounded">
+                                    <i class="fas fa-cart-plus me-2"></i>THÊM GIỎ
+                                    </button>
+                                  </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                    <div class="card h-100 shadow-sm">
+                        <div class="position-relative">
+                            <img src="{{ url_for('static', filename='images/MacBook Pro.png') }}"
+                                 class="card-img-top p-3"
+                                 alt="MacBook Pro 16"
+                                 style="height: 220px; object-fit: contain;">
+                            <div class="position-absolute top-0 start-0 m-2">
+                                <span class="badge bg-danger">Giảm 10%</span>
+                            </div>
+                        </div>
+                        <div class="card-body d-flex flex-column justify-content-between">
+                            <div>
+                                <h3 class="card-title mb-2 fw-semibold">MacBook Pro 16" M2</h3>
+                                <div class="d-flex gap-2 mb-2 flex-wrap">
+                                    <span class="badge bg-primary rounded-pill spec-badge">M2 Max</span>
+                                    <span class="badge bg-info rounded-pill spec-badge">32GB RAM</span>
+                                    <span class="badge bg-success rounded-pill spec-badge">1TB SSD</span>
+                                </div>
+                                <div class="text-warning mb-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <span class="text-muted ms-1">(4.5)</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-danger mb-3 fw-bold">68.990.000₫</h4>
+                                <small class="price-strike">76.990.000₫</small>
+                                 <a href="/order_laptop">
+                                    <button class="btn btn-primary w-100 py-2 rounded">
+                                    <i class="fas fa-cart-plus me-2"></i>THÊM GIỎ
+                                    </button>
+                                  </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                    <div class="card h-100 shadow-sm">
+                        <div class="position-relative">
+                            <img src="{{ url_for('static', filename='images/ASUS ROG Zephyrus.png') }}"
+                                 class="card-img-top p-3"
+                                 alt="ASUS ROG Zephyrus"
+                                 style="height: 220px; object-fit: contain;">
+                            <div class="position-absolute top-0 start-0 m-2">
+                                <span class="badge bg-info">Gaming</span>
+                            </div>
+                        </div>
+                        <div class="card-body d-flex flex-column justify-content-between">
+                            <div>
+                                <h3 class="card-title mb-2 fw-semibold">ASUS ROG Zephyrus</h3>
+                                <div class="d-flex gap-2 mb-2 flex-wrap">
+                                    <span class="badge bg-primary rounded-pill spec-badge">RTX 4070</span>
+                                    <span class="badge bg-warning rounded-pill spec-badge">240Hz</span>
+                                    <span class="badge bg-success rounded-pill spec-badge">32GB RAM</span>
+                                </div>
+                                <div class="text-warning mb-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <span class="text-muted ms-1">(5.0)</span>
+                                </div>
+                            </div>
+                            <div>
+                                 <h4 class="text-danger mb-3 fw-bold">52.990.000₫</h4>
+                                 <a href="/order_laptop">
+                                    <button class="btn btn-primary w-100 py-2 rounded">
+                                    <i class="fas fa-cart-plus me-2"></i>THÊM GIỎ
+                                    </button>
+                                  </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                    <div class="card h-100 shadow-sm">
+                        <div class="position-relative">
+                            <img src="{{ url_for('static', filename='images/ThinkPad X1.png') }}"
+                                 class="card-img-top p-3"
+                                 alt="Lenovo ThinkPad X1"
+                                 style="height: 220px; object-fit: contain;">
+                            <div class="position-absolute top-0 start-0 m-2">
+                                <span class="badge bg-danger">Bán chạy</span>
+                            </div>
+                        </div>
+                        <div class="card-body d-flex flex-column justify-content-between">
+                            <div>
+                                <h3 class="card-title mb-2 fw-semibold">ThinkPad X1 Carbon</h3>
+                                <div class="d-flex gap-2 mb-2 flex-wrap">
+                                    <span class="badge bg-primary rounded-pill spec-badge">i7-1260P</span>
+                                    <span class="badge bg-info rounded-pill spec-badge">16GB RAM</span>
+                                    <span class="badge bg-success rounded-pill spec-badge">2TB SSD</span>
+                                </div>
+                                <div class="text-warning mb-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                    <span class="text-muted ms-1">(4.8)</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-danger mb-3 fw-bold">38.990.000₫</h4>
+                                 <a href="/order_laptop">
+                                    <button class="btn btn-primary w-100 py-2 rounded">
+                                    <i class="fas fa-cart-plus me-2"></i>THÊM GIỎ
+                                    </button>
+                                  </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <!-- Product 5 -->
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="position-relative">
+                        <img src="{{ url_for('static', filename='images/HP Spectre.png') }}"
+                             class="card-img-top p-3"
+                             alt="HP Spectre x360"
+                             style="height: 220px; object-fit: contain;">
+                        <div class="position-absolute top-0 start-0 m-2">
+                            <span class="badge bg-primary">Mới</span>
+                        </div>
+                    </div>
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div>
+                            <h3 class="card-title mb-2 fw-semibold">HP Spectre x360 14</h3>
+                            <div class="d-flex gap-2 mb-2 flex-wrap">
+                                <span class="badge bg-primary rounded-pill spec-badge">i7-1260P</span>
+                                <span class="badge bg-info rounded-pill spec-badge">16GB RAM</span>
+                                <span class="badge bg-success rounded-pill spec-badge">1TB SSD</span>
+                            </div>
+                            <div class="text-warning mb-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="text-muted ms-1">(4.6)</span>
+                            </div>
+                        </div>
+                        <div>
+                              <h4 class="text-danger mb-3 fw-bold">36.990.000₫</h4>
+                                 <a href="/order_laptop">
+                                    <button class="btn btn-primary w-100 py-2 rounded">
+                                    <i class="fas fa-cart-plus me-2"></i>THÊM GIỎ
+                                    </button>
+                                  </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 6 -->
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="position-relative">
+                        <img src="{{ url_for('static', filename='images/Acer Predator.png') }}"
+                             class="card-img-top p-3"
+                             alt="Acer Predator"
+                             style="height: 220px; object-fit: contain;">
+                        <div class="position-absolute top-0 start-0 m-2">
+                            <span class="badge bg-danger">Gaming</span>
+                        </div>
+                    </div>
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div>
+                            <h3 class="card-title mb-2 fw-semibold">Acer Predator Helios</h3>
+                            <div class="d-flex gap-2 mb-2 flex-wrap">
+                                <span class="badge bg-primary rounded-pill spec-badge">i9-12900H</span>
+                                <span class="badge bg-warning rounded-pill spec-badge">RTX 4080</span>
+                                <span class="badge bg-info rounded-pill spec-badge">32GB RAM</span>
+                            </div>
+                            <div class="text-warning mb-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="text-muted ms-1">(4.9)</span>
+                            </div>
+                        </div>
+                        <div>
+                             <h4 class="text-danger mb-3 fw-bold">62.990.000₫</h4>
+                                 <a href="/order_laptop">
+                                    <button class="btn btn-primary w-100 py-2 rounded">
+                                    <i class="fas fa-cart-plus me-2"></i>THÊM GIỎ
+                                    </button>
+                                  </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 7 -->
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="position-relative">
+                        <img src="{{ url_for('static', filename='images/Surface Laptop.png') }}"
+                             class="card-img-top p-3"
+                             alt="Surface Laptop"
+                             style="height: 220px; object-fit: contain;">
+                        <div class="position-absolute top-0 start-0 m-2">
+                            <span class="badge bg-info">Mỏng nhẹ</span>
+                        </div>
+                    </div>
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div>
+                            <h3 class="card-title mb-2 fw-semibold">Surface Laptop 5</h3>
+                            <div class="d-flex gap-2 mb-2 flex-wrap">
+                                <span class="badge bg-primary rounded-pill spec-badge">i7-1255U</span>
+                                <span class="badge bg-info rounded-pill spec-badge">16GB RAM</span>
+                                <span class="badge bg-success rounded-pill spec-badge">512GB SSD</span>
+                            </div>
+                            <div class="text-warning mb-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <span class="text-muted ms-1">(4.4)</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-danger mb-3 fw-bold">34.990.000₫</h4>
+                                 <a href="/order_laptop">
+                                    <button class="btn btn-primary w-100 py-2 rounded">
+                                    <i class="fas fa-cart-plus me-2"></i>THÊM GIỎ
+                                    </button>
+                                  </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 8 -->
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="position-relative">
+                        <img src="{{ url_for('static', filename='images/LG Gram 17.png') }}"
+                             class="card-img-top p-3"
+                             alt="LG Gram"
+                             style="height: 220px; object-fit: contain;">
+                        <div class="position-absolute top-0 start-0 m-2">
+                            <span class="badge bg-success">Siêu nhẹ</span>
+                        </div>
+                    </div>
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div>
+                            <h3 class="card-title mb-2 fw-semibold">LG Gram 17 2023</h3>
+                            <div class="d-flex gap-2 mb-2 flex-wrap">
+                                <span class="badge bg-primary rounded-pill spec-badge">i7-1260P</span>
+                                <span class="badge bg-info rounded-pill spec-badge">16GB RAM</span>
+                                <span class="badge bg-success rounded-pill spec-badge">1TB SSD</span>
+                            </div>
+                            <div class="text-warning mb-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="text-muted ms-1">(4.7)</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-danger mb-3 fw-bold">39.990.000₫</h4>
+                                 <a href="/order_laptop">
+                                    <button class="btn btn-primary w-100 py-2 rounded">
+                                    <i class="fas fa-cart-plus me-2"></i>THÊM GIỎ
+                                    </button>
+                                  </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 9 -->
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="position-relative">
+                        <img src="{{ url_for('static', filename='images/MSI Stealth GS77.png') }}"
+                             class="card-img-top p-3"
+                             alt="MSI Stealth"
+                             style="height: 220px; object-fit: contain;">
+                        <div class="position-absolute top-0 start-0 m-2">
+                            <span class="badge bg-danger">Flagship</span>
+                        </div>
+                    </div>
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div>
+                            <h3 class="card-title mb-2 fw-semibold">MSI Stealth GS77</h3>
+                            <div class="d-flex gap-2 mb-2 flex-wrap">
+                                <span class="badge bg-primary rounded-pill spec-badge">i9-12900H</span>
+                                <span class="badge bg-warning rounded-pill spec-badge">RTX 4090</span>
+                                <span class="badge bg-info rounded-pill spec-badge">64GB RAM</span>
+                            </div>
+                            <div class="text-warning mb-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="text-muted ms-1">(5.0)</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-danger mb-3 fw-bold">89.990.000₫</h4>
+                                 <a href="/order_laptop">
+                                    <button class="btn btn-primary w-100 py-2 rounded">
+                                    <i class="fas fa-cart-plus me-2"></i>THÊM GIỎ
+                                    </button>
+                                  </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <!-- Các sản phẩm 5-8 có thể thêm tương tự -->
+                
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4 mt-auto">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5>Chính sách</h5>
+                    <ul class="list-unstyled">
+                        <li>Bảo hành 2 năm</li>
+                        <li>Đổi trả 7 ngày</li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Liên hệ</h5>
+                    <p>Số điện thoại: 0835385003 <br>Email: support@techzone.vn</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Theo dõi chúng tôi</h5>
+                    <div class="social-icons">
+                        <a href="#" class="text-light mx-2"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-light mx-2"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-light mx-2"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+            <p class="mt-3 mb-0">&copy; 2025 TechZone - Premium Laptops</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Hiệu ứng khi thêm vào giỏ hàng
+        document.querySelectorAll('.btn-primary').forEach(button => {
+            button.addEventListener('click', function() {
+                const originalHTML = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-check me-2"></i>ĐÃ THÊM!';
+                this.classList.remove('btn-primary');
+                this.classList.add('btn-success');
+                
+                setTimeout(() => {
+                    this.innerHTML = originalHTML;
+                    this.classList.remove('btn-success');
+                    this.classList.add('btn-primary');
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>

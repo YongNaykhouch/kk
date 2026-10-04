@@ -1,0 +1,93 @@
+{% extends "Admin.html" %}
+{% block dashboard %}
+
+<h1 class="text-3xl font-bold mb-6">Admin Dashboard</h1>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <!-- Products Section -->
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-semibold mb-4">Products</h2>
+        <p class="text-gray-700">Total: {{ products|length }}</p>
+        <table class="w-full text-left mt-4">
+            <thead>
+                <tr>
+                    <th class="p-2">ID</th>
+                    <th class="p-2">Name</th>
+                    <th class="p-2">Price</th>
+                    <th class="p-2">Category</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td class="p-2">{{ product.product_id }}</td>
+                    <td class="p-2">{{ product.name }}</td>
+                    <td class="p-2">{{ product.price }}</td>
+                    <td class="p-2">{{ product.category }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ url_for('get_products') }}" class="mt-4 inline-block text-blue-500 hover:underline">Manage Products</a>
+    </div>
+
+    <!-- Users Section -->
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-semibold mb-4">Users</h2>
+        <p class="text-gray-700">Total: {{ users|length }}</p>
+        <table class="w-full text-left mt-4">
+            <thead>
+                <tr>
+                    <th class="p-2">ID</th>
+                    <th class="p-2">Username</th>
+                    <th class="p-2">Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td class="p-2">{{ user.id }}</td>
+                    <td class="p-2">{{ user.username }}</td>
+                    <td class="p-2">{{ user.role }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ url_for('manage_users') }}" class="mt-4 inline-block text-blue-500 hover:underline">Manage Users</a>
+    </div>
+
+    <!-- Orders Section -->
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-semibold mb-4">Orders</h2>
+        <p class="text-gray-700">Total: {{ orders|length }}</p>
+        <table class="w-full text-left mt-4">
+            <thead>
+                <tr>
+                    <th class="p-2">ID</th>
+                    <th class="p-2">Customer</th>
+                    <th class="p-2">Total</th>
+                    <th class="p-2">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td class="p-2">{{ order.id }}</td>
+                    <td class="p-2">{{ order.customer_name }}</td>
+                    <td class="p-2">{{ order.total_amount }}</td>
+                    <td class="p-2">{{ order.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ url_for('customers') }}" class="mt-4 inline-block text-blue-500 hover:underline">View Customers</a>
+    </div>
+</div>
+
+<div class="mt-6 flex space-x-4">
+    <a href="{{ url_for('reports') }}" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">View Reports</a>
+    <a href="{{ url_for('promotions') }}" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Manage Promotions</a>
+    <a href="{{ url_for('settings') }}" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Settings</a>
+    <a href="{{ url_for('logout') }}" class="bg-red-500 text-white p-2 rounded hover:bg-red-600">Logout</a>
+</div>
+
+{% endblock %}

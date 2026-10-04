@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sản phẩm tương tự</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: #1a1a1a;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .hot-deal-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: linear-gradient(135deg, #ff4444, #ff6666);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            z-index: 1;
+        }
+
+        .hot-deal-badge::before {
+            content: "🔥";
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
+        .product-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+            height: 40px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .specs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: #666;
+            background-color: #f5f5f5;
+            padding: 5px 8px;
+            border-radius: 4px;
+        }
+
+        .spec-icon {
+            width: 14px;
+            height: 14px;
+            opacity: 0.7;
+        }
+
+        .price-section {
+            border-top: 1px solid #e0e0e0;
+            padding-top: 12px;
+        }
+
+        .old-price {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+
+        .old-price-value {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 13px;
+        }
+
+        .discount-badge {
+            background-color: #fff0f0;
+            color: #ff4444;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .current-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff4444;
+            margin-bottom: 5px;
+        }
+
+        .savings {
+            font-size: 13px;
+            color: #00a650;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sản phẩm tương tự</h1>
+        
+        <div class="products-grid">
+            <!-- Product 1 -->
+            <div class="product-card">
+                <div class="hot-deal-badge">HOT DEAL</div>
+                <img src="https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=400" alt="Laptop Lenovo" class="product-image">
+                <h3 class="product-title">Laptop gaming Lenovo LOQ 15APR9 83JC00M3VN</h3>
+                <div class="specs">
+                    <div class="spec-item">🔧 R5-7235HS</div>
+                    <div class="spec-item">📺 144 Hz</div>
+                    <div class="spec-item">💻 15.6 inch FHD</div>
+                    <div class="spec-item">🎮 16 GB</div>
+                    <div class="spec-item">💾 1 TB</div>
+                    <div class="spec-item">🎨 RTX 3050</div>
+                </div>
+                <div class="price-section">
+                    <div class="old-price">
+                        <span class="old-price-value">24.490.000đ</span>
+                        <span class="discount-badge">-9%</span>
+                    </div>
+                    <div class="current-price">22.290.000đ</div>
+                    <div class="savings">Giảm 2.200.000đ</div>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card">
+                <div class="hot-deal-badge">HOT DEAL</div>
+                <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=400" alt="Laptop HP" class="product-image">
+                <h3 class="product-title">Laptop gaming HP VICTUS 15-fa2731TX B85LNPA</h3>
+                <div class="specs">
+                    <div class="spec-item">🔧 i5-13420H</div>
+                    <div class="spec-item">📺 144 Hz</div>
+                    <div class="spec-item">💻 15.6 inch FHD</div>
+                    <div class="spec-item">🎮 16 GB</div>
+                    <div class="spec-item">💾 512 GB</div>
+                    <div class="spec-item">🎨 RTX 3050</div>
+                </div>
+                <div class="price-section">
+                    <div class="old-price">
+                        <span class="old-price-value">24.590.000đ</span>
+                        <span class="discount-badge">-11%</span>
+                    </div>
+                    <div class="current-price">21.790.000đ</div>
+                    <div class="savings">Giảm 2.800.000đ</div>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-card">
+                <div class="hot-deal-badge">HOT DEAL</div>
+                <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=400" alt="Laptop Acer" class="product-image">
+                <h3 class="product-title">Laptop gaming Acer Nitro V 15 ANV15 41 R1JV</h3>
+                <div class="specs">
+                    <div class="spec-item">🔧 R5-6600H</div>
+                    <div class="spec-item">📺 165 Hz</div>
+                    <div class="spec-item">💻 15.6 inch FHD</div>
+                    <div class="spec-item">🎮 16 GB</div>
+                    <div class="spec-item">💾 512 GB</div>
+                    <div class="spec-item">🎨 RTX 3050</div>
+                </div>
+                <div class="price-section">
+                    <div class="old-price">
+                        <span class="old-price-value">22.090.000đ</span>
+                        <span class="discount-badge">-11%</span>
+                    </div>
+                    <div class="current-price">19.690.000đ</div>
+                    <div class="savings">Giảm 2.400.000đ</div>
+                </div>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="product-card">
+                <div class="hot-deal-badge">HOT DEAL</div>
+                <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400" alt="Laptop Acer" class="product-image">
+                <h3 class="product-title">Laptop gaming Acer Nitro V ProPanel ANV15 41 R9M1</h3>
+                <div class="specs">
+                    <div class="spec-item">🔧 R5-7535HS</div>
+                    <div class="spec-item">📺 180 Hz</div>
+                    <div class="spec-item">💻 15.6 inch FHD</div>
+                    <div class="spec-item">🎮 16 GB</div>
+                    <div class="spec-item">💾 512 GB</div>
+                    <div class="spec-item">🎨 RTX 3050</div>
+                </div>
+                <div class="price-section">
+                    <div class="old-price">
+                        <span class="old-price-value">23.990.000đ</span>
+                        <span class="discount-badge">-8%</span>
+                    </div>
+                    <div class="current-price">21.990.000đ</div>
+                    <div class="savings">Giảm 2.000.000đ</div>
+                </div>
+            </div>
+
+            <!-- Product 5 -->
+            <div class="product-card">
+                <div class="hot-deal-badge">HOT DEAL</div>
+                <img src="https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=400" alt="Laptop Acer Aspire" class="product-image">
+                <h3 class="product-title">Laptop gaming Acer Aspire 7 A715 59G 73LB</h3>
+                <div class="specs">
+                    <div class="spec-item">🔧 i7-12650H</div>
+                    <div class="spec-item">📺 144 Hz</div>
+                    <div class="spec-item">💻 15.6 inch FHD</div>
+                    <div class="spec-item">🎮 16 GB</div>
+                    <div class="spec-item">💾 512 GB</div>
+                    <div class="spec-item">🎨 RTX 3050</div>
+                </div>
+                <div class="price-section">
+                    <div class="old-price">
+                        <span class="old-price-value">22.990.000đ</span>
+                        <span class="discount-badge">-2%</span>
+                    </div>
+                    <div class="current-price">22.590.000đ</div>
+                    <div class="savings">Giảm 400.000đ</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

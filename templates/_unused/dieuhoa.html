@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Điều Hòa - Cửa Hàng Điện Tử</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
+</head>
+<body>
+    <main class="flex-grow-1 py-5">
+        <div class="container">
+            <h1 class="text-center mb-5 display-3 fw-bold text-primary">ĐỒNG HỒ THỜI TRANG</h1>
+        </div>
+    </main>
+  <div class="top-navbar">
+    <p>CHÀO MỪNG ĐẾN CỬA HÀNG ĐIỆN TỬ</p>
+    <div class="icons">
+    {% if session.username %}
+        <a href="{{ url_for('profile') }}">
+            <i class="fas fa-user"></i> Hồ sơ
+        </a>
+        <a href="{{ url_for('logout') }}">
+            <i class="fas fa-sign-out-alt"></i> Đăng xuất
+        </a>
+    {% else %}
+        <a href="{{ url_for('login') }}">
+            <img src="{{ url_for('static', filename='images/register.png') }}" alt="" width="18px">Đăng ký
+        </a>
+        <a href="{{ url_for('register') }}">
+            <img src="{{ url_for('static', filename='images/register.png') }}" alt="" width="18px"> Đăng nhập
+        </a>
+    {% endif %}
+    <a href="#" data-bs-toggle="modal" data-bs-target="#cartModal" class="cart-icon">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count" id="cartCount">0</span>
+    </a>
+</div>
+  </div>
+
+  <nav class="navbar navbar-expand-lg" id="navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{{ url_for('index') }}" id="logo">
+        <span id="span1"></span>Cửa hàng <span>Điện Tử</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span><img src="{{ url_for('static', filename='images/menu.png') }}" alt="" width="30px"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{{ url_for('index') }}">Trang chủ</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Sản phẩm</a>
+          </li>
+          
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Danh mục
+            </a>
+            <ul class="dropdown-menu bg-primary text-white" aria-labelledby="navbarDropdown">
+              <li class="dropdown-header">Điện Tử</li>
+              <li><a class="dropdown-item" href="{{ url_for('dien_thoai') }}">Điện thoại</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('may_anh') }}">Máy ảnh</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('laptop') }}">Laptop</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('man_hinh_may_tinh') }}">Màn hình máy tính</a></li>
+              <li class="dropdown-divider"></li>
+              <li class="dropdown-header">Đồ Gia Dụng</li>
+              <li><a class="dropdown-item" href="{{ url_for('tu_lanh') }}">Tủ lạnh</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('dieu_hoa') }}">Điều hòa</a></li>
+              <li class="dropdown-divider"></li>
+              <li class="dropdown-header">Phụ Kiện</li>
+              <li><a class="dropdown-item" href="{{ url_for('dong_ho') }}">Đồng hồ</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('tai_nghe') }}">Tai nghe</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('index') }}">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('index') }}">Liên hệ</a>
+          </li>
+        </ul>
+        <form class="d-flex" id="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Tìm</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  <div class="bottom_navbar">
+    <ul>
+      <li><a href="{{ url_for('dien_thoai') }}">Điện thoại</a></li>
+      <li><a href="{{ url_for('may_anh') }}">Máy ảnh</a></li>
+      <li><a href="{{ url_for('tu_lanh') }}">Tủ lạnh</a></li>
+      <li><a href="{{ url_for('dieu_hoa') }}">Điều hòa</a></li>
+      <li><a href="{{ url_for('dong_ho') }}">Đồng hồ</a></li>
+      <li><a href="{{ url_for('tai_nghe') }}">Tai nghe</a></li>
+      <li><a href="{{ url_for('laptop') }}">Laptop</a></li>
+      <li><a href="{{ url_for('man_hinh_may_tinh') }}">Màn hình máy tính</a></li>
+    </ul>
+  </div>
+  <div class="container my-5" id="product-cards" style="background-color: #ffffff;">
+    <h1 class="text-center text-dark mb-4">Danh Sách Điều Hòa</h1>
+    <div class="container mt-3">
+      <div class="row">
+        {% if products %}
+          {% for product in products %}
+          <div class="col-md-3 py-3">
+            <div class="card shadow-lg border-0 rounded-3 h-100 d-flex flex-column">
+              <img src="{{ product.image }}" alt="{{ product.name }}" class="card-img-top rounded-top"
+                style="object-fit: contain; height: 200px;">
+              <div class="card-body text-center d-flex flex-column justify-content-between">
+                <div>
+                  <h5 class="fw-bold mb-2">{{ product.name }}</h5>
+                  <p class="mb-2">Thương Hiệu: {{ product.brand }}</p>
+                  <div class="item-compare d-flex justify-content-center gap-2 my-2">
+                    <span class="badge bg-primary text-white rounded-pill">25W</span>
+                  </div>
+                  <div class="star my-2">
+                    <i class="fa-solid fa-star text-warning"></i>
+                    <i class="fa-solid fa-star text-warning"></i>
+                    <i class="fa-solid fa-star text-warning"></i>
+                    <i class="fa-solid fa-star text-warning"></i>
+                    <i class="fa-solid fa-star text-warning"></i>
+                  </div>
+                  <h4 class="text-danger fw-bold mb-3">{{ '{:,.0f} ₫'.format(product.price) }}</h4>
+                </div>
+                <button class="btn btn-warning fw-bold rounded-pill py-2"
+                  onclick="addToCart('{{ product.product_id }}', '{{ product.name }}', {{ product.price }})">
+                  <i class="fa-solid fa-cart-shopping me-2"></i> Đặt mua
+                </button>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        {% else %}
+          <div class="col-12 text-center">
+            <p class="text-muted">Không có sản phẩm nào trong danh mục này.</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <!-- Cart Modal -->
+  <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="cartModalLabel">Giỏ Hàng</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <table class="w-100">
+            <thead>
+              <tr>
+                <th>Tên Sản Phẩm</th>
+                <th>Số Lượng</th>
+                <th>Đơn Giá</th>
+                <th>Tổng</th>
+                <th>Hành Động</th>
+              </tr>
+            </thead>
+            <tbody id="cartItems">
+              <!-- Cart items will be dynamically added here -->
+            </tbody>
+          </table>
+          <div class="total" id="cartTotal">Tổng Cộng: 0 ₫</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+          <button type="button" class="btn btn-primary fw-bold" onclick="window.location.href='{{ url_for('checkout') }}'">Checkout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- footer -->
+  <a href="#" class="arrow"><i><img src="./images/arrow.png" alt=""></i></a>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <script>
+    // Pass customer_id from session to JavaScript
+    const customerId = {{ session.customer_id | tojson if session.customer_id is defined and session.customer_id is not none else 0 | tojson }};
+    // Cart functionality
+    function addToCart(productId, name, price) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const existingItem = cart.find(item => item.product_id === productId);
+
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({
+          product_id: productId,
+          name: name,
+          price: price,
+          quantity: 1
+        });
+      }
+
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartDisplay();
+      alert('Đã thêm sản phẩm vào giỏ hàng!');
+    }
+
+    function updateCartDisplay() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const cartItems = document.getElementById('cartItems');
+      const cartCount = document.getElementById('cartCount');
+      const cartTotal = document.getElementById('cartTotal');
+      let total = 0;
+
+      cartItems.innerHTML = '';
+      cart.forEach((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+        cartItems.innerHTML += `
+                <tr>
+                    <td>${item.name}</td>
+                    <td>${item.quantity}</td>
+                    <td>${item.price.toLocaleString()} ₫</td>
+                    <td>${itemTotal.toLocaleString()} ₫</td>
+                    <td>
+                        <button onclick="removeFromCart(${index})" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+      });
+
+      cartCount.textContent = cart.length;
+      cartTotal.textContent = `Tổng Cộng: ${total.toLocaleString()} ₫`;
+    }
+
+    function removeFromCart(index) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartDisplay();
+    }
+
+    function checkoutCart() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      if (cart.length === 0) {
+        alert('Giỏ hàng trống!');
+        return;
+      }
+
+      const items = cart.map(item => ({
+        product_id: item.product_id,
+        quantity: item.quantity
+      }));
+
+      fetch('/place_order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          customer_id: customerId,
+          items: items
+        })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Đặt hàng thành công! Mã đơn hàng: ' + data.order_id);
+            localStorage.removeItem('cart');
+            updateCartDisplay();
+            $('#cartModal').modal('hide');
+          } else {
+            alert('Lỗi khi đặt hàng: ' + data.error);
+          }
+        })
+        .catch(error => {
+          alert('Lỗi: ' + error);
+        });
+    }
+
+    // Initialize cart display on page load
+    document.addEventListener('DOMContentLoaded', updateCartDisplay);
+  </script>
+</body>
+</html>

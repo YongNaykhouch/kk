@@ -1,0 +1,131 @@
+{% extends "Admin.html" %}
+
+{% block title %}Thêm Sản Phẩm Mới{% endblock %}
+
+{% block page_title %}Thêm Sản Phẩm Mới{% endblock %}
+{% block page_subtitle %}Chọn loại sản phẩm để thêm{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+
+            <div class="text-center mb-5">
+                <h2 class="text-success fw-bold">
+                    <i class="fas fa-plus-circle me-3"></i>Thêm Sản Phẩm Mới
+                </h2>
+                <p class="text-muted lead">Chọn danh mục sản phẩm bạn muốn thêm</p>
+            </div>
+
+            <!-- Category Buttons Grid -->
+            <div class="row g-4">
+                <!-- Điện thoại -->
+                <div class="col-md-6 col-lg-4">
+                    <a href="{{ url_for('admin_add_product_category', category='dienthoai') }}" class="text-decoration-none">
+                        <div class="card shadow-sm border-0 h-100 text-center p-4 hover-lift">
+                            <i class="fas fa-mobile-alt fa-4x text-primary mb-3"></i>
+                            <h5 class="fw-bold">Điện Thoại</h5>
+                            <p class="text-muted small">iPhone, Samsung, Xiaomi...</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Đồng hồ -->
+                <div class="col-md-6 col-lg-4">
+                    <a href="{{ url_for('admin_add_product_category', category='dongho') }}" class="text-decoration-none">
+                        <div class="card shadow-sm border-0 h-100 text-center p-4 hover-lift">
+                            <i class="fas fa-clock fa-4x text-info mb-3"></i>
+                            <h5 class="fw-bold">Đồng Hồ Thông Minh</h5>
+                            <p class="text-muted small">Apple Watch, Galaxy Watch...</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Laptop -->
+                <div class="col-md-6 col-lg-4">
+                    <a href="{{ url_for('admin_add_product_category', category='laptop') }}" class="text-decoration-none">
+                        <div class="card shadow-sm border-0 h-100 text-center p-4 hover-lift">
+                            <i class="fas fa-laptop fa-4x text-success mb-3"></i>
+                            <h5 class="fw-bold">Laptop</h5>
+                            <p class="text-muted small">MacBook, Dell, ASUS...</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Máy tính bàn -->
+                <div class="col-md-6 col-lg-4">
+                    <a href="{{ url_for('admin_add_product_category', category='maytinhbanpc') }}" class="text-decoration-none">
+                        <div class="card shadow-sm border-0 h-100 text-center p-4 hover-lift">
+                            <i class="fas fa-desktop fa-4x text-warning mb-3"></i>
+                            <h5 class="fw-bold">Máy Tính Bàn / PC</h5>
+                            <p class="text-muted small">Gaming PC, Workstation...</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Tủ lạnh -->
+                <div class="col-md-6 col-lg-4">
+                    <a href="{{ url_for('admin_add_product_category', category='tulanh') }}" class="text-decoration-none">
+                        <div class="card shadow-sm border-0 h-100 text-center p-4 hover-lift">
+                            <i class="fas fa-snowflake fa-4x text-success mb-3"></i>
+                            <h5 class="fw-bold">Tủ Lạnh</h5>
+                            <p class="text-muted small">Samsung, LG, Hitachi...</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Quạt -->
+                <div class="col-md-6 col-lg-4">
+                    <a href="{{ url_for('admin_add_product_category', category='quat') }}" class="text-decoration-none">
+                        <div class="card shadow-sm border-0 h-100 text-center p-4 hover-lift">
+                            <i class="fas fa-fan fa-4x text-primary mb-3"></i>
+                            <h5 class="fw-bold">Quạt</h5>
+                            <p class="text-muted small">Quạt đứng, quạt treo tường...</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Máy giặt & sấy -->
+                <div class="col-md-6 col-lg-4">
+                    <a href="{{ url_for('admin_add_product_category', category='maygiatsay') }}" class="text-decoration-none">
+                        <div class="card shadow-sm border-0 h-100 text-center p-4 hover-lift">
+                            <i class="fas fa-tshirt fa-4x text-info mb-3"></i>
+                            <h5 class="fw-bold">Máy Giặt & Sấy</h5>
+                            <p class="text-muted small">Electrolux, Toshiba...</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Bếp từ -->
+                <div class="col-md-6 col-lg-4">
+                    <a href="{{ url_for('admin_add_product_category', category='beptu') }}" class="text-decoration-none">
+                        <div class="card shadow-sm border-0 h-100 text-center p-4 hover-lift">
+                            <i class="fas fa-fire-burner fa-4x text-danger mb-3"></i>
+                            <h5 class="fw-bold">Bếp Từ</h5>
+                            <p class="text-muted small">Bosch, Sunhouse...</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="text-center mt-5">
+                <a href="{{ url_for('admin_products') }}" class="btn btn-secondary btn-lg">
+                    <i class="fas fa-arrow-left me-2"></i>Quay Lại Danh Sách
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hover-lift {
+        transition: all 0.3s ease;
+    }
+    .hover-lift:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+    }
+</style>
+{% endblock %}

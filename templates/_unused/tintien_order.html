@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang đặt hàng</title>
+</head>
+<body>
+    <h2>Chi tiết đơn hàng</h2>
+
+    <p>Tạm tính: <span id="subtotal">{{ subtotal }}</span>₫</p>
+    <p>Phí vận chuyển: <span id="shipping">{{ shipping_fee }}</span>₫</p>
+    <p>Giảm giá: <input type="number" id="discount" value="{{ discount }}" oninput="updateTotal()">₫</p>
+
+    <h3>Tổng cộng: <span id="total">0</span>₫</h3>
+
+    <script>
+        function updateTotal() {
+            const subtotal = parseInt(document.getElementById('subtotal').textContent);
+            const shipping = parseInt(document.getElementById('shipping').textContent);
+            const discount = parseInt(document.getElementById('discount').value);
+
+            const total = subtotal + shipping - discount;
+            document.getElementById('total').textContent = total.toLocaleString('vi-VN');
+        }
+
+        // Gọi khi trang vừa load
+        updateTotal();
+    </script>
+</body>
+</html>

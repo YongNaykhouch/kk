@@ -1,0 +1,166 @@
+{% extends "Admin.html" %}
+
+{% block title %}Chi Tiết Khách Hàng{% endblock %}
+
+{% block page_title %}
+    <i class="fas fa-user me-2"></i> Chi Tiết Khách Hàng
+{% endblock %}
+
+{% block page_subtitle %}
+    {{ customer.username }} <small class="text-muted">({{ customer.email }})</small>
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid px-4 py-4">
+    <div class="row g-4">
+        <!-- Cột trái: Avatar + Thông tin cơ bản -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center p-4">
+                    <!-- Avatar -->
+                    <div class="mb-4">
+                        {% if customer.avatar %}
+                            <img src="{{ url_for('static', filename='uploads/' ~ customer.avatar) }}"
+                                 class="rounded-circle shadow-lg border border-4 border-white"
+                                 width="180" height="180"
+                                 alt="{{ customer.username }}"
+                                 style="object-fit: cover;">
+                        {% else %}
+                            <div class="bg-gradient-primary rounded-circle d-flex align-items-center justify-content-center text-white fw-bold mx-auto shadow-lg"
+                                 style="width:180px; height:180px; font-size:60px; background: linear-gradient(135deg, #6e8efb, #a777e3);">
+                                {{ customer.username[:2].upper() }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <h3 class="mb-1 fw-bold">{{ customer.username }}</h3>
+                    <p class="text-muted mb-4">{{ customer.email }}</p>
+
+                    <div class="text-start">
+                        <div class="mb-3">
+                            <small class="text-muted text-uppercase fw-semibold">Số điện thoại</small>
+                            <p class="mb-0 fw-bold">{{ customer.phone or '<span class="text-danger">Chưa cập nhật</span>' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <small class="text-muted text-uppercase fw-semibold">Ngày sinh</small>
+                            <p class="mb-0 fw-bold">{{ customer.dob or '<span class="text-danger">Chưa cập nhật</span>' }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <small class="text-muted text-uppercase fw-semibold">Địa chỉ</small>
+                            <p class="mb-0 fw-bold">
+                                {{ customer.address or '<span class="text-danger">Chưa cập nhật</span>' }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="d-grid gap-3">
+                        <a href="{{ url_for('admin_edit_customer', customer_id=customer.id) }}"
+                           class="btn btn-warning btn-lg">
+                            <i class="fas fa-user-edit me-2"></i> Sửa Thông Tin
+                        </a>
+                        <a href="{{ url_for('admin_customers') }}"
+                           class="btn btn-outline-secondary btn-lg">
+                            <i class="fas fa-arrow-left me-2"></i> Quay Lại Danh Sách
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cột phải: Thống kê + Đơn hàng gần nhất -->
+        <div class="col-lg-8">
+            <!-- Thống kê nhanh -->
+            <div class="row mb-4 g-3">
+                <div class="col-md-6">
+                    <div class="card shadow-sm border-0 bg-gradient-info text-white h-100">
+                        <div class="card-body text-center py-4">
+                            <i class="fas fa-shopping-bag fa-2x mb-3 opacity-75"></i>
+                            <h4 class="mb-0">Tổng Đơn Hàng Hoàn Thành</h4>
+                            <h2 class="display-5 fw-bold mb-0">{{ stats.order_count }}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card shadow-sm border-0 bg-gradient-danger text-white h-100">
+                        <div class="card-body text-center py-4">
+                            <i class="fas fa-money-bill-wave fa-2x mb-3 opacity-75"></i>
+                            <h4 class="mb-0">Tổng Chi Tiêu</h4>
+                            <h2 class="display-5 fw-bold mb-0">{{ format_currency(stats.total_spent) }}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Danh sách đơn hàng gần nhất -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="fas fa-receipt me-2"></i> 5 Đơn Hàng Gần Nhất
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    {% if recent_orders %}
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-4">Mã Đơn</th>
+                                    <th>Ngày Đặt</th>
+                                    <th>Tổng Tiền</th>
+                                    <th>Trạng Thái</th>
+                                    <th class="text-end pe-4">Thao Tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in recent_orders %}
+                                <tr>
+                                    <td class="ps-4">
+                                        <strong class="text-primary">#{{ order.order_id[:12] }}...</strong>
+                                    </td>
+                                    <td>
+                                        {{ order.created_at.strftime('%d/%m/%Y') }}<br>
+                                        <small class="text-muted">{{ order.created_at.strftime('%H:%M') }}</small>
+                                    </td>
+                                    <td class="fw-bold text-danger">{{ format_currency(order.total_price) }}</td>
+                                    <td>
+                                        {% if order.status == 'pending' %}
+                                            <span class="badge bg-warning text-dark">Chờ xác nhận</span>
+                                        {% elif order.status == 'processing' %}
+                                            <span class="badge bg-info">Đang xử lý</span>
+                                        {% elif order.status == 'shipped' %}
+                                            <span class="badge bg-primary">Đang giao</span>
+                                        {% elif order.status == 'completed' %}
+                                            <span class="badge bg-success">Đã giao</span>
+                                        {% elif order.status == 'cancelled' %}
+                                            <span class="badge bg-danger">Đã hủy</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">{{ order.status }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <a href="{{ url_for('admin_order_detail', order_id=order.order_id) }}"
+                                           class="btn btn-sm btn-outline-primary" title="Xem chi tiết">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-shopping-cart fa-4x text-muted mb-3"></i>
+                        <p class="text-muted fs-5">Khách hàng này chưa có đơn hàng nào.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
